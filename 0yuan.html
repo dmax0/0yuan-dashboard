@@ -1569,10 +1569,13 @@ function renderTrend(records) {
     return PERIOD_ORDER.indexOf(a.key) - PERIOD_ORDER.indexOf(b.key);
   });
 
-  // ===== 转率目标完成率卡片（创新思维 2.5%，阅读统一 3%）=====
+  // ===== 转率目标完成率卡片（创新思维 2.5%，阅读：秋4期及以前 3%，秋5期起 5%）=====
   function getTargetRate(period, subj) {
-    // 创新思维所有期次 2.5%；阅读所有期次统一 3%
+    // 创新思维所有期次 2.5%；阅读秋4期及以前统一 3%，自秋5期起上调为 5%（2026-10-21 Tal 拍板）
     if (subj === '阅读') {
+      if (PERIOD_ORDER.indexOf(period) >= PERIOD_ORDER.indexOf('秋5期')) {
+        return 0.05;
+      }
       return 0.03;
     }
     return 0.025;
