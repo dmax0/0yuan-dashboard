@@ -980,11 +980,24 @@ const BD_MAP = {
 // 避免「静态顺序数组 + indexOf」把未知期次误判为最前的老问题（铁律 2）。
 const BD_PERIOD_OVERRIDE = {
   fromPeriod: '秋5期',
-  map: { '学海': '徐冲', '简单教育': '徐冲', '掌通': '徐冲', '亿弘': '徐冲' }
+  map: { '学海': '徐冲', '简单教育': '徐冲', '掌通': '徐冲', '亿弘': '徐冲', '初阳': '徐冲' }
 };
 
-// 统一查询入口：所有「渠道 → 商务BD」的推导都必须走这里（含期次覆盖）
-function getBdByChannel(ch, period) {
+// ===== 按购课日期生效的 BD 归属覆盖（2026-10-26 Tal 指示）=====
+// 「刘家欢名下渠道按购课日期：9 月及以前归刘家欢，10 月起归徐冲」。
+// 明细级（有购课日期）优先按日期判定；渠道级汇总（无日期）回退上面的期次规则。
+const BD_DATE_OVERRIDE = {
+  fromDate: '2026-10-01',
+  map: { '学海': '徐冲', '简单教育': '徐冲', '掌通': '徐冲', '亿弘': '徐冲', '初阳': '徐冲' }
+};
+
+// 统一查询入口：所有「渠道 → 商务BD」的推导都必须走这里（含购课日期 / 期次覆盖）
+// buyDate 可选（'YYYY-MM-DD'）：传入时对 BD_DATE_OVERRIDE 内的渠道按日期判定归属
+function getBdByChannel(ch, period, buyDate) {
+  if (buyDate && BD_DATE_OVERRIDE.map[ch]) {
+    return String(buyDate).slice(0, 10) >= BD_DATE_OVERRIDE.fromDate
+      ? BD_DATE_OVERRIDE.map[ch] : (BD_MAP[ch] || '其他');
+  }
   var pi = PERIOD_ORDER.indexOf(period);
   var fi = PERIOD_ORDER.indexOf(BD_PERIOD_OVERRIDE.fromPeriod);
   if (pi !== -1 && fi !== -1 && pi >= fi && BD_PERIOD_OVERRIDE.map[ch]) {
@@ -1139,7 +1152,7 @@ function deriveVirtualFields() {
   if (DATA.detail_records) {
     DATA.detail_records.forEach(function(r) {
       r['渠道类型'] = getChannelType(r['渠道'], r['期次']);
-      r['商务BD'] = getBdByChannel(r['渠道'], r['期次']);
+      r['商务BD'] = getBdByChannel(r['渠道'], r['期次'], r['购课日期']);
       r['转化链路'] = getConvLink(r['期次']);
       typeSet.add(r['渠道类型']);
       bdSet.add(r['商务BD']);
