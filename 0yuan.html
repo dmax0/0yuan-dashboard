@@ -8500,10 +8500,13 @@ function renderFullFunnel(records) {
   });
 
   // Merge low-volume items into "其他" (only for channel/gradeTeacher dims, single period)
+  // 2026-10-28 Tal：渠道维度取消自动归并，在班量小的渠道也完整展示（原阈值 20 会把 8 个
+  // 小渠道折叠成一行「其他」，掩盖了渠道真实构成）。保留代码以便需要时一键恢复。
   var LOW_THRESHOLD = 20;
   var periodFilter = currentFilters['期次'];
   var isSinglePeriod = periodFilter && periodFilter.length === 1;
-  var shouldMerge = isSinglePeriod && (currentFunnelDim === 'channel');
+  var MERGE_LOW_CHANNEL = false;
+  var shouldMerge = MERGE_LOW_CHANNEL && isSinglePeriod && (currentFunnelDim === 'channel');
 
   if (shouldMerge) {
     var merged = { key: '其他', 在班人次: 0, 加微人次: 0, 加过微人次: 0, app登录人次: 0, 摸底测覆盖人次: 0,
