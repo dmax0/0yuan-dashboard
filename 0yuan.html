@@ -8707,11 +8707,14 @@ function renderFullFunnelGradeTeacher(records, COLS) {
   });
 
   // Merge low-volume teachers into "其他" per grade (only for single period)
+  // 2026-10-28 Tal：辅导老师维度同样取消自动归并，在班量小的老师也完整展示。
+  // 保留代码，需要恢复时把 MERGE_LOW_TEACHER 改为 true。
   var LOW_THRESHOLD = 20;
   var periodFilter = currentFilters['期次'];
   var isSinglePeriod = periodFilter && periodFilter.length === 1;
+  var MERGE_LOW_TEACHER = false;
 
-  if (isSinglePeriod) {
+  if (MERGE_LOW_TEACHER && isSinglePeriod) {
     gradeOrder.forEach(function(g) {
       if (!gradeMap[g]) return;
       var teachers = Object.values(gradeMap[g]);
