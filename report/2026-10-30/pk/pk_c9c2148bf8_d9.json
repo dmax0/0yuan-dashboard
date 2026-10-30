@@ -1,0 +1,212 @@
+{
+  "period": "秋7期",
+  "day": 9,
+  "phase": "课中",
+  "stage": "课中 D9 · 二讲当天",
+  "date": "2026-10-30",
+  "source_date": "2026-10-30",
+  "cutoff": "2026-10-29",
+  "preview": false,
+  "title": "📊 商务组 PK 299组 · 课中",
+  "metrics": [
+    "二讲出勤率",
+    "二讲完课率",
+    "任一讲出勤率",
+    "转化率",
+    "出勤转化率"
+  ],
+  "totals": {
+    "二讲出勤率": {
+      "business": 0.0,
+      "peer": 0.0,
+      "gap": 0.0
+    },
+    "二讲完课率": {
+      "business": 0.0,
+      "peer": 0.0,
+      "gap": 0.0
+    },
+    "任一讲出勤率": {
+      "business": 27.41765679049481,
+      "peer": 22.681215900233827,
+      "gap": 4.736440890260983
+    },
+    "转化率": {
+      "business": 0.030079711234772145,
+      "peer": 0.019485580670303974,
+      "gap": 0.01059413056446817
+    },
+    "出勤转化率": {
+      "business": 0.10970927043335162,
+      "peer": 0.0859106529209622,
+      "gap": 0.023798617512389417
+    }
+  },
+  "grades": {
+    "1年级": {
+      "二讲出勤率": {
+        "business": 0.0,
+        "peer": 0.0,
+        "gap": 0.0
+      },
+      "二讲完课率": {
+        "business": 0.0,
+        "peer": 0.0,
+        "gap": 0.0
+      },
+      "任一讲出勤率": {
+        "business": 29.552819183408943,
+        "peer": 29.3488824101069,
+        "gap": 0.2039367733020434
+      },
+      "转化率": {
+        "business": 0.0,
+        "peer": 0.0,
+        "gap": 0.0
+      },
+      "出勤转化率": {
+        "business": 0.0,
+        "peer": 0.0,
+        "gap": 0.0
+      }
+    },
+    "2年级": {
+      "二讲出勤率": {
+        "business": 0.0,
+        "peer": 0.0,
+        "gap": 0.0
+      },
+      "二讲完课率": {
+        "business": 0.0,
+        "peer": 0.0,
+        "gap": 0.0
+      },
+      "任一讲出勤率": {
+        "business": 31.934731934731936,
+        "peer": 25.873221216041397,
+        "gap": 6.061510718690538
+      },
+      "转化率": {
+        "business": 0.0,
+        "peer": 0.129366106080207,
+        "gap": -0.129366106080207
+      },
+      "出勤转化率": {
+        "business": 0.0,
+        "peer": 0.5,
+        "gap": -0.5
+      }
+    },
+    "3年级": {
+      "二讲出勤率": {
+        "business": 0.0,
+        "peer": 0.0,
+        "gap": 0.0
+      },
+      "二讲完课率": {
+        "business": 0.0,
+        "peer": 0.0,
+        "gap": 0.0
+      },
+      "任一讲出勤率": {
+        "business": 28.78315132605304,
+        "peer": 22.248062015503876,
+        "gap": 6.535089310549164
+      },
+      "转化率": {
+        "business": 0.15600624024961,
+        "peer": 0.0,
+        "gap": 0.15600624024961
+      },
+      "出勤转化率": {
+        "business": 0.5420054200542005,
+        "peer": 0.0,
+        "gap": 0.5420054200542005
+      }
+    },
+    "4年级": {
+      "二讲出勤率": {
+        "business": 0.0,
+        "peer": 0.0,
+        "gap": 0.0
+      },
+      "二讲完课率": {
+        "business": 0.0,
+        "peer": 0.0,
+        "gap": 0.0
+      },
+      "任一讲出勤率": {
+        "business": 24.605678233438486,
+        "peer": 19.058823529411764,
+        "gap": 5.546854704026721
+      },
+      "转化率": {
+        "business": 0.0,
+        "peer": 0.0,
+        "gap": 0.0
+      },
+      "出勤转化率": {
+        "business": 0.0,
+        "peer": 0.0,
+        "gap": 0.0
+      }
+    },
+    "5年级": {
+      "二讲出勤率": {
+        "business": 0.0,
+        "peer": 0.0,
+        "gap": 0.0
+      },
+      "二讲完课率": {
+        "business": 0.0,
+        "peer": 0.0,
+        "gap": 0.0
+      },
+      "任一讲出勤率": {
+        "business": 21.670606776989757,
+        "peer": 17.254901960784313,
+        "gap": 4.415704816205444
+      },
+      "转化率": {
+        "business": 0.0,
+        "peer": 0.0,
+        "gap": 0.0
+      },
+      "出勤转化率": {
+        "business": 0.0,
+        "peer": 0.0,
+        "gap": 0.0
+      }
+    }
+  },
+  "counts": {
+    "business": 6649.0,
+    "peer": 5132.0
+  },
+  "members": {
+    "business": [
+      "史春晶",
+      "崔国锋"
+    ],
+    "peer": [
+      "学部组（其余学科组）"
+    ]
+  },
+  "subject": "阅读",
+  "warnings": [],
+  "ready": true,
+  "insights": [
+    "🟢 商务组今日无落后指标",
+    "🟢 今日领先最大项：任一讲出勤率（商务组 领先 4.7pp）"
+  ],
+  "baseline": null,
+  "text": "**📊 商务组 PK 299组 · 课中**\n期次：秋7期 ｜ 数据截至 T-1\n\n**总计**\n\n- **二讲出勤率**：商务组 0.0% VS 299组 0.0%\n- **二讲完课率**：商务组 0.0% VS 299组 0.0%\n- **任一讲出勤率**：商务组 27.4% VS 299组 22.7%\n- **转化率**：商务组 0.0% VS 299组 0.0%\n- **出勤转化率**：商务组 0.1% VS 299组 0.1%\n\n🟢 商务组今日无落后指标\n\n🟢 今日领先最大项：任一讲出勤率（商务组 领先 4.7pp）\n\n![总计对比表](pk_c9c2148bf8_d9_total.png)\n\n**分年级明细**\n![分年级对比表](pk_c9c2148bf8_d9_grades.png)\n\n**分年级下辅导**\n![分年级下辅导](pk_c9c2148bf8_d9_tutor.png)\n\n**分渠道**\n![分渠道](pk_c9c2148bf8_d9_channel.png)",
+  "image_path": "/Users/tal/WorkBuddy/0yuan-dashboard/site/report/2026-10-30/pk/pk_c9c2148bf8_d9.png",
+  "image_paths": {
+    "total": "/Users/tal/WorkBuddy/0yuan-dashboard/site/report/2026-10-30/pk/pk_c9c2148bf8_d9_total.png",
+    "grades": "/Users/tal/WorkBuddy/0yuan-dashboard/site/report/2026-10-30/pk/pk_c9c2148bf8_d9_grades.png",
+    "tutor": "/Users/tal/WorkBuddy/0yuan-dashboard/site/report/2026-10-30/pk/pk_c9c2148bf8_d9_tutor.png",
+    "channel": "/Users/tal/WorkBuddy/0yuan-dashboard/site/report/2026-10-30/pk/pk_c9c2148bf8_d9_channel.png"
+  },
+  "html_path": "/Users/tal/WorkBuddy/0yuan-dashboard/site/report/2026-10-30/pk/pk_c9c2148bf8_d9.html"
+}
