@@ -1500,6 +1500,7 @@ html.ui-capture .ui-loading, html.ui-capture .ui-loadbar { display: none !import
         <button class="dim-btn" onclick="switchFunnelDim('grade',this)" data-page-node-id="nsrajPbRmwcaMXhHvwqyKR">分年级</button>
         <button class="dim-btn" onclick="switchFunnelDim('gradeTeacher',this)" data-page-node-id="zUrIYLs2vFg1it39JrTamN">分年级下辅导</button>
         <button class="dim-btn" onclick="switchFunnelDim('groupLeader',this)" data-page-node-id="CnP2gxRvtZCKnH9mnzcloQ">分组长</button>
+        <button class="dim-btn" onclick="switchFunnelDim('department',this)" data-page-node-id="deptFunnelBtn01">分部门</button>
         <button class="dim-btn" onclick="switchFunnelDim('period',this)" data-page-node-id="xPbiGYD4HwgpoPz9iTTBju">分期次</button>
       </div>
     </div>
@@ -9026,6 +9027,11 @@ function renderFlow(records) {
 
 // ===== FULL FUNNEL ANALYSIS =====
 var currentFunnelDim = 'subject';
+// 部门口径（2026-11-04 Tal）：组长＝崔国锋/史春晶 → 商务组；其余（含空值）→ 学部组
+function ffDeptOf(r) {
+  var g = r['学科组名称'];
+  return (g === '崔国锋' || g === '崔国峰' || g === '史春晶') ? '商务组' : '学部组';
+}
 
 function switchFunnelDim(dim, btn) {
   currentFunnelDim = dim;
@@ -9033,7 +9039,7 @@ function switchFunnelDim(dim, btn) {
   if (btn) btn.classList.add('active');
   else {
     // find by text content
-    var dimLabels = { subject: '分学科', channel: '分渠道', channelType: '分渠道类型', hotspot: '分热点', cityline: '分城市线', city: '分城市', grade: '分年级', gradeTeacher: '分年级下辅导', groupLeader: '分组长', period: '分期次' };
+    var dimLabels = { subject: '分学科', channel: '分渠道', channelType: '分渠道类型', hotspot: '分热点', cityline: '分城市线', city: '分城市', grade: '分年级', gradeTeacher: '分年级下辅导', groupLeader: '分组长', department: '分部门', period: '分期次' };
     document.querySelectorAll('.dim-btn').forEach(function(b) {
       if (b.textContent.trim() === dimLabels[dim]) b.classList.add('active');
     });
@@ -9130,6 +9136,8 @@ function renderFullFunnel(records) {
     grade: { key: '年级', label: '年级', order: ['1年级','2年级','3年级','4年级','5年级'] },
     gradeTeacher: { key: '年级', label: '年级', order: ['1年级','2年级','3年级','4年级','5年级'] },
     groupLeader: { key: '学科组名称', label: '组长', order: ['史春晶','崔国锋','学部组'] },
+    // 2026-11-04 Tal：分部门＝国锋组+春晶组合并为「商务组」，其余为「学部组」
+    department: { key: '_部门', label: '部门', order: ['商务组','学部组'] },
     period: { key: '期次', label: '期次', order: PERIOD_ORDER_BASE }
   };
 
@@ -9142,10 +9150,12 @@ function renderFullFunnel(records) {
     return;
   }
 
+  function _ffBuild(records) {
+  if (!records || records.length === 0) return { html: '<div style="padding:12px;color:var(--text-secondary);font-size:13px;">暂无数据</div>', list: [] };
   // Aggregate by groupKey
   var map = {};
   records.forEach(function(r) {
-    var k = r[groupKey] || (groupKey === '学科组名称' ? '学部组' : '未知');
+    var k = groupKey === '_部门' ? ffDeptOf(r) : (r[groupKey] || (groupKey === '学科组名称' ? '学部组' : '未知'));
     if (!map[k]) {
       map[k] = {
         key: k, 在班人次: 0, 加微人次: 0, 加过微人次: 0, app登录人次: 0, 摸底测覆盖人次: 0,
@@ -9302,6 +9312,28 @@ function renderFullFunnel(records) {
     html += '</tr>';
   });
 
+  // 分部门：追加「商务组 − 学部组」差值行（率类为百分点 pp）
+  if (currentFunnelDim === 'department') {
+    var _biz = list.filter(function(r) { return r.key === '商务组'; })[0];
+    var _dep = list.filter(function(r) { return r.key === '学部组'; })[0];
+    if (_biz && _dep) {
+      html += '<tr class="total-row" style="background:#fff7ed;"><td>差值（商务组−学部组）</td>';
+      COLS.forEach(function(col) {
+        if (!col.isRate) {
+          var dv = _biz[col.key] - _dep[col.key];
+          html += '<td>' + (dv >= 0 ? '+' : '') + fmtInt(dv) + '</td>';
+          if (col.showPct) html += '<td>-</td>';
+        } else {
+          var d = ((_biz[col.key] || 0) - (_dep[col.key] || 0)) * 100;
+          var c = Math.abs(d) < 0.05 ? 'var(--text-secondary)' : (d > 0 ? '#16a34a' : '#dc2626');
+          html += '<td style="color:' + c + ';font-weight:600;">' + (d > 0 ? '+' : '') + d.toFixed(1) + 'pp</td>';
+        }
+        if (col.key === '转化率') html += '<td>-</td>';
+      });
+      html += '</tr>';
+    }
+  }
+
   // Total row
   var totalRow = { 在班人次: totalLeads };
   COLS.forEach(function(col) {
@@ -9335,6 +9367,20 @@ function renderFullFunnel(records) {
     if (col.key === '转化率') html += '<td>-</td>';
   });
   html += '</tr></tbody></table>';
+  return { html: html, list: list };
+  }
+
+  var _main = _ffBuild(records);
+  var html = _main.html, list = _main.list;
+  // 2026-11-04 Tal：分渠道下追加「学部组 / 商务组（国锋组+春晶组）」两张分渠道全链路表
+  if (currentFunnelDim === 'channel') {
+    var _t = function(t) { return '<div class="section-title" style="margin-top:18px;font-size:14px;">' + t + '</div>'; };
+    var _bizRecs = records.filter(function(r) { return ffDeptOf(r) === '商务组'; });
+    var _depRecs = records.filter(function(r) { return ffDeptOf(r) === '学部组'; });
+    html = _t('全部 · 分渠道') + html
+      + _t('学部组 · 分渠道') + _ffBuild(_depRecs).html
+      + _t('商务组（国锋组+春晶组）· 分渠道') + _ffBuild(_bizRecs).html;
+  }
 
   document.getElementById('tableFullFunnel').innerHTML = html;
 
