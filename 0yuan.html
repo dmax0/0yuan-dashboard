@@ -6714,8 +6714,19 @@ var MONTHLY_TARGET_MAP = {
   '2026-09': { total: 20000, bd: { '刘家欢': 6000, '杨文丽': 6000, '徐冲': 6000, '王雨': 2000 } },
   // 2026-10：刘家欢渠道自秋5期起归徐冲，新增商务 陈天钰；王雨自 2026-10 起纳入月度目标
   // 2026-10-12 调整：徐冲 7,000 / 杨文丽 7,000 / 王雨 5,000 / 陈天钰 5,000 → 合计 24,000
-  '2026-10': { total: 24000, bd: { '徐冲': 7000, '杨文丽': 7000, '王雨': 5000, '陈天钰': 5000 } }
+  '2026-10': { total: 24000, bd: { '徐冲': 7000, '杨文丽': 7000, '王雨': 5000, '陈天钰': 5000 } },
+  // 2026-11-05 设置：业务方 11-05 调整：11月改按转低人次考核，各BD 400
+  '2026-11': { total: 1600, bd: { '徐冲': 400, '杨文丽': 400, '王雨': 400, '陈天钰': 400 } }
 };
+
+// 月度目标考核口径：不写默认按「在班人次（进量）」；写 '转低' 则该月达成率/缺口用「转低人次」
+// 2026-11-05 业务方调整：11 月起商务月度目标改按转低人次下达（总 1,600，4 位 BD 各 400）
+var MONTHLY_METRIC_MAP = {
+  '2026-11': '转低'
+};
+function getMonthlyMetric(month) {
+  return MONTHLY_METRIC_MAP[month] || '在班';
+}
 
 // Get BD targets for a given month (default to latest defined)
 function getMonthlyTarget(month) {
@@ -7110,6 +7121,10 @@ function renderBdMonthly(records) {
   // Get targets for detected month
   var monthTarget = getMonthlyTarget(month);
   var MONTHLY_TARGET = monthTarget.total;
+  // 考核口径：'转低' 的月份，达成率/缺口用转低人次；其余月份沿用「在班人次（进量）」
+  var useLowConv = (getMonthlyMetric(month) === '转低');
+  function metricVal(b) { return useLowConv ? (b.转低人次 || 0) : (b.在班人次 || 0); }
+  var metricLabel = useLowConv ? '转低' : '进量';
   // 复制一份，避免动态补齐时污染 MONTHLY_TARGET_MAP 配置
   var BD_TARGET = Object.assign({}, monthTarget.bd);
   // Ensure default targets for known BDs
@@ -7157,11 +7172,12 @@ function renderBdMonthly(records) {
   });
 
   const bdList = Object.values(bdData).filter(b => b.target > 0);
-  bdList.sort((a, b) => b.在班人次 - a.在班人次);
+  bdList.sort((a, b) => metricVal(b) - metricVal(a));
   // 其他/杨国威等无目标的BD也加入实际总量计算
-  const bdOther = Object.values(bdData).filter(b => b.target === 0 && b.在班人次 > 0);
-  bdOther.sort((a, b) => b.在班人次 - a.在班人次);
-  const totalActual = bdList.reduce((s, b) => s + b.在班人次, 0) + bdOther.reduce((s, b) => s + b.在班人次, 0);
+  const bdOther = Object.values(bdData).filter(b => b.target === 0 && (b.在班人次 > 0 || b.转低人次 > 0));
+  bdOther.sort((a, b) => metricVal(b) - metricVal(a));
+  const totalActual = bdList.reduce((s, b) => s + metricVal(b), 0) + bdOther.reduce((s, b) => s + metricVal(b), 0);
+  const totalInput = bdList.reduce((s, b) => s + b.在班人次, 0) + bdOther.reduce((s, b) => s + b.在班人次, 0);
 
   // ===== 1. Overall progress bar =====
   var overallPct = MONTHLY_TARGET > 0 ? safeDiv(totalActual, MONTHLY_TARGET) : 0;
@@ -7180,7 +7196,11 @@ function renderBdMonthly(records) {
   var barPct = MONTHLY_TARGET > 0 ? Math.min(overallPct * 100, 100) : 0;
 
   var monthLabel = month ? month.replace('2026-0','').replace('2026-','') + '月' : '';
-  var progressTitle = MONTHLY_TARGET > 0 ? (monthLabel + '进量进度') : (monthLabel + '无目标月份');
+  var progressTitle = MONTHLY_TARGET > 0 ? (monthLabel + metricLabel + '进度') : (monthLabel + '无目标月份');
+  var convRate = safeDiv(totalActual, bdList.reduce((s,b)=>s+b.转化在班,0) + bdOther.reduce((s,b)=>s+b.转化在班,0));
+  var metaLowConv = useLowConv
+    ? ('本月转低 <strong>' + fmtInt(totalActual) + '</strong> 人次 · 本月进量 <strong>' + fmtInt(totalInput) + '</strong> 人次 · 转化率 <strong>' + fmtPct(convRate) + '</strong>')
+    : ('转低 <strong>' + fmtInt(totalActual) + '</strong> 人次 · 转化率 <strong>' + fmtPct(convRate) + '</strong>');
 
   document.getElementById('bdOverall').innerHTML =
     '<div class="progress-header">' +
@@ -7194,7 +7214,7 @@ function renderBdMonthly(records) {
       '<div class="progress-meta">' +
         '<div class="item">达成率 <strong>' + fmtPct(overallPct) + '</strong></div>' +
         '<div class="item"><span class="gap ' + gapClass + '">' + gapText + '</span></div>' +
-        '<div class="item">转低 <strong>' + fmtInt(bdList.reduce((s,b)=>s+b.转低人次,0)) + '</strong> 人次 · 转化率 <strong>' + fmtPct(safeDiv(bdList.reduce((s,b)=>s+b.转低人次,0), bdList.reduce((s,b)=>s+b.转化在班,0) + bdOther.reduce((s,b)=>s+b.转化在班,0))) + '</strong></div>' +
+        '<div class="item">' + metaLowConv + '</div>' +
         (monthTP ? '<div class="item">对比时间进度 <strong>' + fmtPct(monthTP.progress) + '</strong>（截至' + monthTP.asOf.slice(5) + '）· ' + tpDiffHtml(overallPct, true) + '</div>' : '') +
       '</div>'
     : '<div style="padding:20px 0;text-align:center;color:#94a3b8;font-size:13px;">该月份暂无目标设定</div>');
@@ -7202,8 +7222,9 @@ function renderBdMonthly(records) {
   // ===== 2. BD cards =====
   let cardsHtml = '';
   bdList.forEach(b => {
-    const pct = safeDiv(b.在班人次, b.target);
-    const bgap = b.target - b.在班人次;
+    const done = metricVal(b);
+    const pct = safeDiv(done, b.target);
+    const bgap = b.target - done;
     let barClass = 'on-track';
     if (pct < 1.0) {
       if (pct < 0.6) barClass = 'critical';
@@ -7212,15 +7233,22 @@ function renderBdMonthly(records) {
     }
     const barW = Math.min(pct * 100, 100);
     const chNames = Array.from(b.channels).sort();
+    // 转低口径：月度目标 / 本月转低 / 达成率 / 缺口 / 本月进量 / 对比时间进度
+    // 注意：第 2 个 .val 必须是「考核完成量」（转低或进量），日报脚本 build_report.py 靠位置[1]取完标
     cardsHtml +=
       '<div class="bd-card">' +
         '<div class="bd-name">' + b.name + '</div>' +
         '<div class="bd-channels">负责渠道：' + chNames.map(c => '<span>' + c + '</span>').join('') + '</div>' +
         '<div class="bd-stats">' +
           '<div class="bd-stat"><div class="val">' + fmtInt(b.target) + '</div><div class="lbl">月度目标</div></div>' +
-          '<div class="bd-stat"><div class="val">' + fmtInt(b.在班人次) + '</div><div class="lbl">本月进量</div></div>' +
+          (useLowConv
+            ? '<div class="bd-stat"><div class="val">' + fmtInt(b.转低人次) + '</div><div class="lbl">本月转低</div></div>'
+            : '<div class="bd-stat"><div class="val">' + fmtInt(b.在班人次) + '</div><div class="lbl">本月进量</div></div>') +
           '<div class="bd-stat"><div class="val">' + fmtPct(pct) + '</div><div class="lbl">达成率</div></div>' +
           '<div class="bd-stat"><div class="val" style="color:' + (bgap > 0 ? '#ef4444' : '#10b981') + '">' + fmtInt(Math.abs(bgap)) + '</div><div class="lbl">' + (bgap > 0 ? '缺口' : '超出') + '</div></div>' +
+          (useLowConv
+            ? '<div class="bd-stat"><div class="val">' + fmtInt(b.在班人次) + '</div><div class="lbl">本月进量</div></div>'
+            : '') +
           '<div class="bd-stat"><div class="val">' + tpDiffHtml(pct, false) + '</div><div class="lbl">对比时间进度</div></div>' +
         '</div>' +
         '<div class="bd-progress"><div class="bd-progress-fill ' + barClass + '" style="width:' + barW + '%"><span style="position:absolute;left:50%;transform:translateX(-50%);color:#fff;font-size:12px;font-weight:700;text-shadow:0 1px 2px rgba(0,0,0,0.2);white-space:nowrap;">' + fmtPct(pct) + '</span></div></div>' +
@@ -7235,9 +7263,14 @@ function renderBdMonthly(records) {
         '<div class="bd-channels">负责渠道：' + chNames.map(c => '<span>' + c + '</span>').join('') + '</div>' +
         '<div class="bd-stats">' +
           '<div class="bd-stat"><div class="val">-</div><div class="lbl">月度目标</div></div>' +
-          '<div class="bd-stat"><div class="val">' + fmtInt(b.在班人次) + '</div><div class="lbl">本月进量</div></div>' +
+          (useLowConv
+            ? '<div class="bd-stat"><div class="val">' + fmtInt(b.转低人次) + '</div><div class="lbl">本月转低</div></div>'
+            : '<div class="bd-stat"><div class="val">' + fmtInt(b.在班人次) + '</div><div class="lbl">本月进量</div></div>') +
           '<div class="bd-stat"><div class="val">-</div><div class="lbl">达成率</div></div>' +
           '<div class="bd-stat"><div class="val">-</div><div class="lbl">缺口</div></div>' +
+          (useLowConv
+            ? '<div class="bd-stat"><div class="val">' + fmtInt(b.在班人次) + '</div><div class="lbl">本月进量</div></div>'
+            : '') +
           '<div class="bd-stat"><div class="val">-</div><div class="lbl">对比时间进度</div></div>' +
         '</div>' +
       '</div>';
