@@ -137,7 +137,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
 [id^="chartFlowPie"] { height: 420px; }
 .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 @media (max-width: 900px) { .grid2 { grid-template-columns: 1fr; } }
-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 8px; border-radius: var(--radius-sm); overflow: hidden; table-layout: fixed; }
+/* 2026-11-06 修复：sticky 表头 + border-collapse:collapse 在部分 Windows 浏览器（Chrome/Edge/旧内核）
+   会导致首行数据被画到表头上方、文字消失（分年级表「1年级」整行空白）。改用 separate 是标准修复方案。 */
+table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 12px; margin-top: 8px; border-radius: var(--radius-sm); overflow: hidden; table-layout: fixed; }
 table th { padding: 10px 8px; text-align: center; background: linear-gradient(180deg, #edf0ff 0%, #e3e8f8 100%); font-weight: 700; color: var(--text-secondary); position: sticky; top: 0; white-space: nowrap; font-size: 11px; letter-spacing: 0.3px; border-bottom: 2px solid var(--primary); }
 table td { padding: 9px 8px; text-align: center; border-bottom: 1px solid var(--border-light); font-variant-numeric: tabular-nums; }
 table tbody tr:hover { background: var(--primary-light); }
@@ -222,7 +224,7 @@ table .total-row td { font-weight: 700; color: var(--primary-dark); }
 .dday-breadcrumb-item { display: inline-flex; align-items: center; gap: 3px; padding: 2px 8px; background: #f1f5f9; border-radius: 4px; font-size: 11px; cursor: pointer; font-weight: 600; color: #475569; }
 .dday-breadcrumb-item:hover { background: #e2e8f0; }
 .dday-breadcrumb-sep { color: #94a3b8; font-size: 11px; }
-.dday-drill-table { width: 100%; border-collapse: collapse; font-size: 12px; table-layout: auto; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif; }
+.dday-drill-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 12px; table-layout: auto; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif; }
 .dday-drill-table th { background: #f8fafc; padding: 7px 10px; text-align: center; font-weight: 600; color: #475569; border-bottom: 2px solid #e2e8f0; position: sticky; top: 0; z-index: 1; white-space: nowrap; }
 .dday-drill-table td { padding: 6px 10px; text-align: center; border-bottom: 1px solid #f1f5f9; word-break: keep-all; white-space: nowrap; }
 .dday-drill-table td:first-child { font-weight: 600; cursor: pointer; color: #4f6ef7; min-width: 80px; }
