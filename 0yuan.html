@@ -1273,11 +1273,6 @@ html.ui-capture .ui-loading, html.ui-capture .ui-loadbar { display: none !import
     <div class="table-wrap" id="tableGradePeriod" data-page-node-id="8vQmzGo29zLQgaLVLsz7ts"></div>
   </div>
   <div class="tab-content" id="tabBd" data-page-node-id="eL7tpvqqsLaTPkq6XP8jvc">
-    <div style="background:var(--primary-light);padding:10px 14px;border-radius:var(--radius-sm);font-size:12px;color:var(--text-secondary);margin-bottom:14px;">
-      口径说明：考核口径为「转低人次」的月份（如 2026-11），完成量按<b>转化窗口归月</b>——
-      取与该月日期有交集的期次（11 月 = 秋8期 + 冬1期）的转低人次合计，不再按 0元课购课月份归集。
-      其余月份仍按购课月份统计在班人次。
-    </div>
     <!-- 整体月度完成情况 -->
     <div class="section-title" data-page-node-id="fWmNBtJOvKRcLqGgMZP9tc">月度整体完成情况</div>
     <div class="bd-overall" id="bdOverall" data-page-node-id="EAEUhGtv611GvFCeqTNjzI"></div>
@@ -7246,8 +7241,7 @@ function renderBdMonthly(records, monthOverride, convPeriods) {
   var progressTitle = MONTHLY_TARGET > 0 ? (monthLabel + metricLabel + '进度') : (monthLabel + '无目标月份');
   var convRate = safeDiv(totalActual, bdList.reduce((s,b)=>s+b.转化在班,0) + bdOther.reduce((s,b)=>s+b.转化在班,0));
   var metaLowConv = useLowConv
-    ? ('本月转低 <strong>' + fmtInt(totalActual) + '</strong> 人次 · 本月进量 <strong>' + fmtInt(totalInput) + '</strong> 人次 · 转化率 <strong>' + fmtPct(convRate) + '</strong>'
-       + (convPeriods && convPeriods.length ? ' · 口径：<strong>' + convPeriods.join(' + ') + '</strong>（按转化窗口归月，非购课月）' : ''))
+    ? ('本月转低 <strong>' + fmtInt(totalActual) + '</strong> 人次 · 本月进量 <strong>' + fmtInt(totalInput) + '</strong> 人次 · 转化率 <strong>' + fmtPct(convRate) + '</strong>')
     : ('转低 <strong>' + fmtInt(totalActual) + '</strong> 人次 · 转化率 <strong>' + fmtPct(convRate) + '</strong>');
 
   document.getElementById('bdOverall').innerHTML =
