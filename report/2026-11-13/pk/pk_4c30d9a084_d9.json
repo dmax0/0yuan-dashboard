@@ -1,0 +1,181 @@
+{
+  "period": "冬1期",
+  "day": 9,
+  "phase": "课中",
+  "stage": "课中 D9 · 今晚二讲，看一讲数据",
+  "date": "2026-11-13",
+  "source_date": "2026-11-13",
+  "cutoff": "2026-11-12",
+  "preview": false,
+  "title": "📊 商务组 PK 299组 · 课中",
+  "metrics": [
+    "一讲出勤率",
+    "一讲完课率",
+    "转化率",
+    "出勤转化率"
+  ],
+  "totals": {
+    "一讲出勤率": {
+      "business": 25.734430082256168,
+      "peer": 18.87966804979253,
+      "gap": 6.854762032463636
+    },
+    "一讲完课率": {
+      "business": 19.153936545240892,
+      "peer": 14.730290456431534,
+      "gap": 4.423646088809358
+    },
+    "转化率": {
+      "business": 0.0,
+      "peer": 0.0,
+      "gap": 0.0
+    },
+    "出勤转化率": {
+      "business": 0.0,
+      "peer": 0.0,
+      "gap": 0.0
+    }
+  },
+  "grades": {
+    "1年级": {
+      "一讲出勤率": {
+        "business": 24.347826086956523,
+        "peer": 15.789473684210526,
+        "gap": 8.558352402745998
+      },
+      "一讲完课率": {
+        "business": 19.130434782608695,
+        "peer": 14.035087719298245,
+        "gap": 5.0953470633104505
+      },
+      "转化率": {
+        "business": 0.0,
+        "peer": 0.0,
+        "gap": 0.0
+      },
+      "出勤转化率": {
+        "business": 0.0,
+        "peer": 0.0,
+        "gap": 0.0
+      }
+    },
+    "2年级": {
+      "一讲出勤率": {
+        "business": 32.20338983050848,
+        "peer": 16.666666666666668,
+        "gap": 15.53672316384181
+      },
+      "一讲完课率": {
+        "business": 22.88135593220339,
+        "peer": 15.0,
+        "gap": 7.881355932203391
+      },
+      "转化率": {
+        "business": 0.0,
+        "peer": 0.0,
+        "gap": 0.0
+      },
+      "出勤转化率": {
+        "business": 0.0,
+        "peer": 0.0,
+        "gap": 0.0
+      }
+    },
+    "3年级": {
+      "一讲出勤率": {
+        "business": 21.428571428571427,
+        "peer": 18.27956989247312,
+        "gap": 3.1490015360983072
+      },
+      "一讲完课率": {
+        "business": 16.483516483516482,
+        "peer": 11.827956989247312,
+        "gap": 4.65555949426917
+      },
+      "转化率": {
+        "business": 0.0,
+        "peer": 0.0,
+        "gap": 0.0
+      },
+      "出勤转化率": {
+        "business": 0.0,
+        "peer": 0.0,
+        "gap": 0.0
+      }
+    },
+    "4年级": {
+      "一讲出勤率": {
+        "business": 24.034334763948497,
+        "peer": 23.47826086956522,
+        "gap": 0.5560738943832781
+      },
+      "一讲完课率": {
+        "business": 21.030042918454935,
+        "peer": 20.0,
+        "gap": 1.0300429184549351
+      },
+      "转化率": {
+        "business": 0.0,
+        "peer": 0.0,
+        "gap": 0.0
+      },
+      "出勤转化率": {
+        "business": 0.0,
+        "peer": 0.0,
+        "gap": 0.0
+      }
+    },
+    "5年级": {
+      "一讲出勤率": {
+        "business": 28.571428571428573,
+        "peer": 19.0,
+        "gap": 9.571428571428573
+      },
+      "一讲完课率": {
+        "business": 17.24137931034483,
+        "peer": 12.0,
+        "gap": 5.241379310344829
+      },
+      "转化率": {
+        "business": 0.0,
+        "peer": 0.0,
+        "gap": 0.0
+      },
+      "出勤转化率": {
+        "business": 0.0,
+        "peer": 0.0,
+        "gap": 0.0
+      }
+    }
+  },
+  "counts": {
+    "business": 851.0,
+    "peer": 482.0
+  },
+  "members": {
+    "business": [
+      "史春晶",
+      "崔国锋"
+    ],
+    "peer": [
+      "学部组（其余学科组）"
+    ]
+  },
+  "subject": "阅读",
+  "warnings": [],
+  "ready": true,
+  "insights": [
+    "🟢 商务组今日无落后指标",
+    "🟢 今日领先最大项：一讲出勤率（商务组 领先 6.9pp）"
+  ],
+  "baseline": null,
+  "text": "**📊 商务组 PK 299组 · 课中**\n期次：冬1期 ｜ 数据截至 T-1\n\n**总计**\n\n- **一讲出勤率**：商务组 25.7% VS 299组 18.9%\n- **一讲完课率**：商务组 19.2% VS 299组 14.7%\n- **转化率**：商务组 0.00% VS 299组 0.00%\n- **出勤转化率**：商务组 0.00% VS 299组 0.00%\n\n🟢 商务组今日无落后指标\n\n🟢 今日领先最大项：一讲出勤率（商务组 领先 6.9pp）\n\n![总计对比表](pk_4c30d9a084_d9_total.png)\n\n**分年级明细**\n![分年级对比表](pk_4c30d9a084_d9_grades.png)\n\n**分年级下辅导**\n![分年级下辅导](pk_4c30d9a084_d9_tutor.png)\n\n**分渠道**\n![分渠道](pk_4c30d9a084_d9_channel.png)",
+  "image_path": "/Users/tal/WorkBuddy/0yuan-dashboard/site/report/2026-11-13/pk/pk_4c30d9a084_d9.png",
+  "image_paths": {
+    "total": "/Users/tal/WorkBuddy/0yuan-dashboard/site/report/2026-11-13/pk/pk_4c30d9a084_d9_total.png",
+    "grades": "/Users/tal/WorkBuddy/0yuan-dashboard/site/report/2026-11-13/pk/pk_4c30d9a084_d9_grades.png",
+    "tutor": "/Users/tal/WorkBuddy/0yuan-dashboard/site/report/2026-11-13/pk/pk_4c30d9a084_d9_tutor.png",
+    "channel": "/Users/tal/WorkBuddy/0yuan-dashboard/site/report/2026-11-13/pk/pk_4c30d9a084_d9_channel.png"
+  },
+  "html_path": "/Users/tal/WorkBuddy/0yuan-dashboard/site/report/2026-11-13/pk/pk_4c30d9a084_d9.html"
+}
