@@ -1,0 +1,243 @@
+{
+  "period": "冬2期",
+  "day": 4,
+  "phase": "课前",
+  "stage": "课前 D4",
+  "date": "2026-11-15",
+  "source_date": "2026-11-15",
+  "cutoff": "2026-11-14",
+  "preview": false,
+  "title": "📊 商务组 PK 299组 · 课前",
+  "metrics": [
+    "加微率",
+    "App登录率",
+    "摸底测覆盖率",
+    "激活率",
+    "破冰率",
+    "深沟率"
+  ],
+  "totals": {
+    "加微率": {
+      "business": 73.61301705547932,
+      "peer": 33.333333333333336,
+      "gap": 40.27968372214598
+    },
+    "App登录率": {
+      "business": 23.38757106449716,
+      "peer": 0.0,
+      "gap": 23.38757106449716
+    },
+    "摸底测覆盖率": {
+      "business": 15.291119388355224,
+      "peer": 0.0,
+      "gap": 15.291119388355224
+    },
+    "激活率": {
+      "business": 47.73573809057048,
+      "peer": 33.333333333333336,
+      "gap": 14.402404757237143
+    },
+    "破冰率": {
+      "business": 15.428347382866106,
+      "peer": 33.333333333333336,
+      "gap": -17.90498595046723
+    },
+    "深沟率": {
+      "business": 6.19486375220545,
+      "peer": 0.0,
+      "gap": 6.19486375220545
+    }
+  },
+  "grades": {
+    "1年级": {
+      "加微率": {
+        "business": 79.95495495495496,
+        "peer": null,
+        "gap": null
+      },
+      "App登录率": {
+        "business": 26.463963963963963,
+        "peer": null,
+        "gap": null
+      },
+      "摸底测覆盖率": {
+        "business": 18.91891891891892,
+        "peer": null,
+        "gap": null
+      },
+      "激活率": {
+        "business": 56.531531531531535,
+        "peer": null,
+        "gap": null
+      },
+      "破冰率": {
+        "business": 20.72072072072072,
+        "peer": null,
+        "gap": null
+      },
+      "深沟率": {
+        "business": 9.234234234234235,
+        "peer": null,
+        "gap": null
+      }
+    },
+    "2年级": {
+      "加微率": {
+        "business": 76.96674776966748,
+        "peer": null,
+        "gap": null
+      },
+      "App登录率": {
+        "business": 28.953771289537713,
+        "peer": null,
+        "gap": null
+      },
+      "摸底测覆盖率": {
+        "business": 20.76236820762368,
+        "peer": null,
+        "gap": null
+      },
+      "激活率": {
+        "business": 54.257907542579076,
+        "peer": null,
+        "gap": null
+      },
+      "破冰率": {
+        "business": 20.60016220600162,
+        "peer": null,
+        "gap": null
+      },
+      "深沟率": {
+        "business": 7.704785077047851,
+        "peer": null,
+        "gap": null
+      }
+    },
+    "3年级": {
+      "加微率": {
+        "business": 73.12560856864654,
+        "peer": 33.333333333333336,
+        "gap": 39.792275235313205
+      },
+      "App登录率": {
+        "business": 24.440116845180135,
+        "peer": 0.0,
+        "gap": 24.440116845180135
+      },
+      "摸底测覆盖率": {
+        "business": 13.339824732229795,
+        "peer": 0.0,
+        "gap": 13.339824732229795
+      },
+      "激活率": {
+        "business": 44.79065238558909,
+        "peer": 33.333333333333336,
+        "gap": 11.457319052255755
+      },
+      "破冰率": {
+        "business": 12.85296981499513,
+        "peer": 33.333333333333336,
+        "gap": -20.480363518338205
+      },
+      "深沟率": {
+        "business": 5.452775073028238,
+        "peer": 0.0,
+        "gap": 5.452775073028238
+      }
+    },
+    "4年级": {
+      "加微率": {
+        "business": 69.47449768160742,
+        "peer": null,
+        "gap": null
+      },
+      "App登录率": {
+        "business": 18.778979907264297,
+        "peer": null,
+        "gap": null
+      },
+      "摸底测覆盖率": {
+        "business": 12.210200927357032,
+        "peer": null,
+        "gap": null
+      },
+      "激活率": {
+        "business": 40.1854714064915,
+        "peer": null,
+        "gap": null
+      },
+      "破冰率": {
+        "business": 11.437403400309119,
+        "peer": null,
+        "gap": null
+      },
+      "深沟率": {
+        "business": 4.482225656877898,
+        "peer": null,
+        "gap": null
+      }
+    },
+    "5年级": {
+      "加微率": {
+        "business": 67.6783004552352,
+        "peer": null,
+        "gap": null
+      },
+      "App登录率": {
+        "business": 16.23672230652504,
+        "peer": null,
+        "gap": null
+      },
+      "摸底测覆盖率": {
+        "business": 9.256449165402124,
+        "peer": null,
+        "gap": null
+      },
+      "激活率": {
+        "business": 43.095599393019725,
+        "peer": null,
+        "gap": null
+      },
+      "破冰率": {
+        "business": 10.47040971168437,
+        "peer": null,
+        "gap": null
+      },
+      "深沟率": {
+        "business": 3.793626707132018,
+        "peer": null,
+        "gap": null
+      }
+    }
+  },
+  "counts": {
+    "business": 5101.0,
+    "peer": 3.0
+  },
+  "members": {
+    "business": [
+      "史春晶",
+      "崔国锋"
+    ],
+    "peer": [
+      "学部组（其余学科组）"
+    ]
+  },
+  "subject": "阅读",
+  "warnings": [],
+  "ready": true,
+  "insights": [
+    "🔴 今日落后最大项：破冰率（商务组 落后 17.9pp）",
+    "🟢 今日领先最大项：加微率（商务组 领先 40.3pp）"
+  ],
+  "baseline": null,
+  "text": "**📊 商务组 PK 299组 · 课前**\n期次：冬2期 ｜ 数据截至 T-1\n\n**总计**\n\n- **加微率**：商务组 73.6% VS 299组 33.3%\n- **App登录率**：商务组 23.4% VS 299组 0.0%\n- **摸底测覆盖率**：商务组 15.3% VS 299组 0.0%\n- **激活率**：商务组 47.7% VS 299组 33.3%\n- **破冰率**：商务组 15.4% VS 299组 33.3%\n- **深沟率**：商务组 6.2% VS 299组 0.0%\n\n🔴 今日落后最大项：破冰率（商务组 落后 17.9pp）\n\n🟢 今日领先最大项：加微率（商务组 领先 40.3pp）\n\n![总计对比表](pk_005727b845_d4_total.png)\n\n**分年级明细**\n![分年级对比表](pk_005727b845_d4_grades.png)\n\n**分年级下辅导**\n![分年级下辅导](pk_005727b845_d4_tutor.png)\n\n**分渠道**\n![分渠道](pk_005727b845_d4_channel.png)",
+  "image_path": "/Users/tal/WorkBuddy/0yuan-dashboard/site/report/2026-11-15/pk/pk_005727b845_d4.png",
+  "image_paths": {
+    "total": "/Users/tal/WorkBuddy/0yuan-dashboard/site/report/2026-11-15/pk/pk_005727b845_d4_total.png",
+    "grades": "/Users/tal/WorkBuddy/0yuan-dashboard/site/report/2026-11-15/pk/pk_005727b845_d4_grades.png",
+    "tutor": "/Users/tal/WorkBuddy/0yuan-dashboard/site/report/2026-11-15/pk/pk_005727b845_d4_tutor.png",
+    "channel": "/Users/tal/WorkBuddy/0yuan-dashboard/site/report/2026-11-15/pk/pk_005727b845_d4_channel.png"
+  },
+  "html_path": "/Users/tal/WorkBuddy/0yuan-dashboard/site/report/2026-11-15/pk/pk_005727b845_d4.html"
+}
