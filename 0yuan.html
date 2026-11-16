@@ -1274,7 +1274,7 @@ html.ui-capture .ui-loading, html.ui-capture .ui-loadbar { display: none !import
   </div>
   <div class="tab-content" id="tabBd" data-page-node-id="eL7tpvqqsLaTPkq6XP8jvc">
     <div style="background:var(--primary-light);padding:10px 14px;border-radius:var(--radius-sm);font-size:12px;color:var(--text-secondary);margin-bottom:14px;">
-      本 Tab 口径（2026-11-16 更新）：进量类指标（在班人次 / 占比 / 城市线 / 加微 / APP登录）按<b>所选月份自然月（购课月）</b>统计；仅转低相关指标（转低人次 / 转化率 / 出勤转率）按<b>转化窗口期次</b>统计（11 月 = 秋8期 + 冬1期全部，含 10 月底购课部分）。「逐月」两张表按购课自然月展示全部月份。
+      本 Tab 口径（2026-11-16 更新）：进量单量 = <b>B 表渠道进量时间（ord_month）当月有效单量</b>，占比与城市线结构同源 B 表（故无 30城列）；加微 / APP登录率按 A 表所选月份购课自然月计算（分子分母同源）；仅转低相关指标（转低人次 / 转化率 / 出勤转率）按<b>转化窗口期次</b>统计（11 月 = 秋8期 + 冬1期全部，含 10 月底购课部分）。「逐月」两张表展示 B 表有数据的全部月份。
     </div>
     <!-- 整体月度完成情况 -->
     <div class="section-title" data-page-node-id="fWmNBtJOvKRcLqGgMZP9tc">月度整体完成情况</div>
@@ -6653,7 +6653,7 @@ function renderAll() {
   else if (currentTab === 'grade') renderGrade(records);
   else if (currentTab === 'chgrade') renderChannelGrade(records);
   else if (currentTab === 'detail') renderDetail(records);
-  else if (currentTab === 'bd') { var _bdm = bdMonthlyData(records); renderBdMonthly(_bdm.records, _bdm.month, _bdm.periods, _bdm.monthRecords, _bdm.monthBase); }
+  else if (currentTab === 'bd') { var _bdm = bdMonthlyData(records); renderBdMonthly(_bdm.records, _bdm.month, _bdm.periods, _bdm.monthRecords, _bdm.monthBase, _bdm.setlMonth, _bdm.setlAll); }
   else if (currentTab === 'city') renderCity(records);
   else if (currentTab === 'hotspot') renderHotspot(records);
   else if (currentTab === 'flow') renderFlow(records);
@@ -6772,25 +6772,49 @@ function convPeriodsForMonth(month) {
   return out;
 }
 
+// B 表（中台结算）按当前筛选取数：进量口径源（2026-11-16 Tal 定：进量类指标按 B 表
+// 渠道进量时间 ord_month 的有效单量统计）。clearMonth=true 时仅清月份、保留其余筛选。
+function getFilteredSettlement(clearMonth) {
+  var cf = currentFilters || {};
+  var hasPeriod = !!(cf['期次'] && cf['期次'].length);
+  return ((DATA.settlement && DATA.settlement.records) || []).filter(function(r) {
+    if (!clearMonth && cf['月份'] && cf['月份'].length && cf['月份'].indexOf(r.month) === -1) return false;
+    if (cf['期次'] && cf['期次'].length && !cf['期次'].some(function(v) { return normPeriod(v) === normPeriod(r.period); })) return false;
+    if (cf['年级'] && cf['年级'].length && !cf['年级'].some(function(v) { return normGrade(v) === normGrade(r.grade); })) return false;
+    if (cf['商务BD'] && cf['商务BD'].length && cf['商务BD'].indexOf(r.bd) === -1) return false;
+    if (cf['城市等级'] && cf['城市等级'].length && cf['城市等级'].indexOf(r.city_tier) === -1) return false;
+    if (cf['渠道'] && cf['渠道'].length) {
+      var short = CHANNEL_MAP_JS[r.channel] || r.channel;
+      if (cf['渠道'].indexOf(short) === -1) return false;
+    }
+    return true;
+  });
+}
+
 // 月度 Tab 取数（2026-11-16 Tal 定口径）：
 //   - 转低相关指标（转低人次/转化率/出勤转率）→ 转化窗口期次记录（records），保留除月份外全部筛选；
-//   - 其余进量类统计（在班/加微/APP登录/城市线等）→ 所选月份自然月（购课月）记录（monthRecords）；
-//   - 逐月概览 / 月份×城市分布 → 全月份底表（monthBase，仅清月份筛选）。
+//   - 进量单量/城市线结构 → B 表渠道进量时间月（setlMonth / setlAll，有效单量）；
+//   - 加微/APP登录率 → A 表所选月份自然月（monthRecords，分子分母同源 A 表）；
+//   - 逐月概览 / 月份×城市分布 → 全月份底表（monthBase=全月份 A 表、setlAll=全月份 B 表）。
 function bdMonthlyData(records) {
   var month = (currentFilters['月份'] && currentFilters['月份'].length === 1) ? currentFilters['月份'][0]
     : (records.length ? records[0].月份 : null);
   var saved = currentFilters['月份'];
   var base;
   currentFilters['月份'] = [];
-  try { base = getFilteredDetail(); } finally { currentFilters['月份'] = saved; }
+  try {
+    base = getFilteredDetail();
+    var _setlAll = getFilteredSettlement(true);
+  } finally { currentFilters['月份'] = saved; }
+  var _setlMonth = getFilteredSettlement(false);
   if (!month || getMonthlyMetric(month) !== '转低') {
-    return { records: records, monthRecords: records, monthBase: base, month: month };
+    return { records: records, monthRecords: records, monthBase: base, setlMonth: _setlMonth, setlAll: _setlAll, month: month };
   }
   var ps = convPeriodsForMonth(month);
-  if (!ps.length) return { records: records, monthRecords: records, monthBase: base, month: month };
+  if (!ps.length) return { records: records, monthRecords: records, monthBase: base, setlMonth: _setlMonth, setlAll: _setlAll, month: month };
   var conv = base.filter(function (r) { return ps.indexOf(r['期次']) !== -1; });
-  if (!conv.length) return { records: records, monthRecords: records, monthBase: base, month: month };
-  return { records: conv, monthRecords: records, monthBase: base, month: month, periods: ps };
+  if (!conv.length) return { records: records, monthRecords: records, monthBase: base, setlMonth: _setlMonth, setlAll: _setlAll, month: month };
+  return { records: conv, monthRecords: records, monthBase: base, setlMonth: _setlMonth, setlAll: _setlAll, month: month, periods: ps };
 }
 
 function getMonthlyTarget(month) {
@@ -7199,12 +7223,27 @@ function calcMonthTimeProgress(month) {
   return { progress: Math.min(+last.slice(8, 10) / days, 1), asOf: last, days: days };
 }
 
-function renderBdMonthly(records, monthOverride, convPeriods, monthRecords, monthBase) {
-  // 2026-11-16 Tal 定口径：转低口径月份下，仅「转低」相关指标（转低人次/转化率/出勤转率）
-  // 用转化窗口期次记录（records）；其余进量类统计（在班/加微/APP登录/城市线结构等）
-  // 一律按所选月份自然月（购课月）口径（volRecords）。逐月两张表用全月份底表（baseRecords）。
+function renderBdMonthly(records, monthOverride, convPeriods, monthRecords, monthBase, setlRecords, setlAll) {
+  // 2026-11-16 Tal 定口径（二改：进量源改 B 表）：
+  //   进量单量/占比/城市线结构 → B 表渠道进量时间月（setl，有效单量）；
+  //   加微/加过/APP登录率 → A 表所选月份自然月（volRecords，分子分母同源）；
+  //   转低相关指标（转低人次/转化率/出勤转率）→ A 表转化窗口期次（records）；
+  //   逐月两张表用全月份底表（setlBase=B 表全月份、baseRecords=A 表全月份）。
   var volRecords = monthRecords || records;
   var baseRecords = monthBase || volRecords;
+  var hasSetl = !!(DATA.settlement && DATA.settlement.records && DATA.settlement.records.length);
+  var setl = setlRecords || [];
+  var setlBase = setlAll || [];
+  if (!hasSetl) {
+    // B 表未注入时兜底：用 A 表记录模拟 B 表字段（进量=在班人次，渠道/城市线/BD/月份同名映射）
+    function _fakeSetl(src) {
+      return (src || []).map(function(r) {
+        return { month: r['月份'], channel: r.渠道, city_tier: r['城市等级'], bd: r['商务BD'], 有效单量: r.在班人次 || 0 };
+      });
+    }
+    setl = _fakeSetl(volRecords);
+    setlBase = _fakeSetl(baseRecords);
+  }
   // Detect month from records (use first record's month, or from filter)
   var month = monthOverride || null;
   if (!month && records.length > 0) month = records[0].月份;
@@ -7241,13 +7280,17 @@ function renderBdMonthly(records, monthOverride, convPeriods, monthRecords, mont
   });
 
   // Aggregate by channel (for channel detail)
-  // 口径：在班人次 = 自然月（volRecords）；转低/转化在班/转正 = 转化窗口（records）
+  // 口径：进量单量 = B 表渠道进量时间月（setl，有效单量，渠道名经 CHANNEL_MAP_JS 归一为简称）；
+  //       转低/转化在班/转正 = A 表转化窗口（records）
   const chData = {};
   function chBucket(ch) {
     if (!chData[ch]) chData[ch] = { channel: ch, 在班人次: 0, 转化在班: 0, 转低人次: 0, 转正人次: 0 };
     return chData[ch];
   }
-  volRecords.forEach(r => { chBucket(r.渠道).在班人次 += r.在班人次 || 0; });
+  setl.forEach(function(r) {
+    if (typeof r.channel !== 'string' || !r.channel) return;
+    chBucket(CHANNEL_MAP_JS[r.channel] || r.channel).在班人次 += r['有效单量'] || 0;
+  });
   records.forEach(r => {
     const c = chBucket(r.渠道);
     c.转低人次 += r.转低人次 || 0;
@@ -7255,12 +7298,16 @@ function renderBdMonthly(records, monthOverride, convPeriods, monthRecords, mont
     c.转正人次 += r.转正人次 || 0;
   });
 
-  // BD aggregation（口径同上：在班 = 自然月，转低/转化在班/转正 = 转化窗口）
+  // BD aggregation（口径同上：进量 = B 表有效单量，转低/转化在班/转正 = A 表转化窗口）
   const bdData = {};
   Object.keys(BD_TARGET).forEach(bd => { bdData[bd] = { name: bd, target: BD_TARGET[bd], 在班人次: 0, 转化在班: 0, 转低人次: 0, 转正人次: 0, channels: new Set() }; });
-  volRecords.forEach(r => {
-    const bd = r['商务BD'];
-    if (bd && bdData[bd]) { bdData[bd].在班人次 += r.在班人次 || 0; bdData[bd].channels.add(r.渠道); }
+  setl.forEach(function(r) {
+    if (typeof r.channel !== 'string' || !r.channel) return;
+    var bd = r.bd || '其他';
+    if (!bdData[bd]) bd = '其他';
+    if (!bdData[bd]) return;
+    bdData[bd].在班人次 += r['有效单量'] || 0;
+    bdData[bd].channels.add(CHANNEL_MAP_JS[r.channel] || r.channel);
   });
   records.forEach(r => {
     const bd = r['商务BD'];
@@ -7379,25 +7426,24 @@ function renderBdMonthly(records, monthOverride, convPeriods, monthRecords, mont
   document.getElementById('bdCards').innerHTML = cardsHtml;
 
   // ===== 2b. 逐月在班 & 转化概览 =====
-  // 2026-11-16 口径：进量类指标一律按购课自然月归集（全月份底表 baseRecords）；
-  // 「转低」口径月份（如 2026-11）的转低/转化在班/转正/出勤列改取其转化窗口期次合计
-  // （认领制：被认领期次不再计入其他月份的购课月转低），保证逐行可加总、合计不重复计数。
+  // 2026-11-16 口径：进量单量按 B 表渠道进量时间（ord_month）的有效单量逐月归集（setlBase，行=B表有数据的月份）；
+  // 「转低」口径月份（如 2026-11）的转低/转化在班/转正/出勤列取其转化窗口期次合计（认领制：
+  // 被认领期次不再计入其他月份的购课月转低），其余月份转低按 A 表购课月归集；合计可加总不重复。
   var monthSummaryMap = {};
   function msBucket(mo) {
     if (!monthSummaryMap[mo]) {
       monthSummaryMap[mo] = {
         month: mo,
         在班人次: 0, 转化在班: 0, 转低人次: 0, 转正人次: 0,
-        加微人次: 0, 加过微人次: 0, app登录人次: 0,
-        任一讲出勤: 0, 任一讲完课: 0,
-        _30城: 0, _一线: 0, _新一线: 0, _二线: 0, _三线: 0, _四线及以下: 0
+        任一讲出勤: 0,
+        _一线: 0, _新一线: 0, _二线: 0, _三线: 0, _四线及以下: 0
       };
     }
     return monthSummaryMap[mo];
   }
-  // 先收集全部月份；「转低口径月」认领其转化窗口期次，并算窗口期次转化合计
+  // 收集 B 表全部月份；「转低口径月」认领其转化窗口期次，并算窗口期次转化合计
   var msMonths = {};
-  baseRecords.forEach(function(r) { msMonths[r['月份'] || '未知'] = true; });
+  setlBase.forEach(function(r) { if (r.month) msMonths[r.month] = true; });
   var msClaimedPeriods = {};
   var msConvAgg = {};   // 转低口径月 -> 窗口期次转化合计
   Object.keys(msMonths).sort().forEach(function(mo) {
@@ -7415,28 +7461,29 @@ function renderBdMonthly(records, monthOverride, convPeriods, monthRecords, mont
     });
     msConvAgg[mo] = agg;
   });
-  baseRecords.forEach(function(r) {
-    var m = msBucket(r['月份'] || '未知');
-    var n = r.在班人次 || 0;
+  // 进量单量（B 表有效单量）+ 城市线结构，按渠道进量时间月归集
+  setlBase.forEach(function(r) {
+    if (!r.month) return;
+    var m = msBucket(r.month);
+    var n = r['有效单量'] || 0;
     m.在班人次 += n;
-    // 进量类：一律购课自然月
-    m.加微人次 += r.加微人次 || 0; m.加过微人次 += r.加过微人次 || 0;
-    m.app登录人次 += r['app登录人次'] || 0;
-    m.任一讲完课 += r['任一讲完课人次'] || 0;
-    if (CITY_30_SET.has(r['城市'])) m._30城 += n;
-    var tier = (r['城市等级'] || '').replace('城市', '');
+    var tier = (r.city_tier || '').replace('城市', '');
     if (tier === '一线') m._一线 += n;
     else if (tier === '新一线') m._新一线 += n;
     else if (tier === '二线') m._二线 += n;
     else if (tier === '三线') m._三线 += n;
     else m._四线及以下 += n;
-    // 转化类：未被转低月认领的期次按购课月归集；已认领期次归入认领月（见下方覆盖）
-    if (!msClaimedPeriods[r['期次']]) {
-      m.转低人次 += r.转低人次 || 0;
-      m.转化在班 += r.转化在班 || 0;
-      m.转正人次 += r.转正人次 || 0;
-      m.任一讲出勤 += r['任一讲出勤人数'] || 0;
-    }
+  });
+  // 转化类（A 表）：未被转低月认领的期次按购课月归集，且只保留 B 表存在数据的月份行
+  baseRecords.forEach(function(r) {
+    var mo = r['月份'] || '未知';
+    if (!msMonths[mo]) return;
+    if (msClaimedPeriods[r['期次']]) return;
+    var m = msBucket(mo);
+    m.转低人次 += r.转低人次 || 0;
+    m.转化在班 += r.转化在班 || 0;
+    m.转正人次 += r.转正人次 || 0;
+    m.任一讲出勤 += r['任一讲出勤人数'] || 0;
   });
   // 转低口径月份行：覆盖为转化窗口期次合计（含跨月购课部分，如 11 月 = 秋8期+冬1期）
   Object.keys(msConvAgg).forEach(function(mo) {
@@ -7452,17 +7499,15 @@ function renderBdMonthly(records, monthOverride, convPeriods, monthRecords, mont
   msList.sort(function(a, b) { return a.month < b.month ? -1 : a.month > b.month ? 1 : 0; });
   var msTotal = msList.reduce(function(acc, m) {
     acc.在班人次 += m.在班人次; acc.转化在班 += m.转化在班; acc.转低人次 += m.转低人次; acc.转正人次 += m.转正人次;
-    acc.加微人次 += m.加微人次; acc.加过微人次 += m.加过微人次; acc.app登录人次 += m.app登录人次;
-    acc.任一讲出勤 += m.任一讲出勤; acc.任一讲完课 += m.任一讲完课;
-    acc._30城 += m._30城; acc._一线 += m._一线; acc._新一线 += m._新一线;
+    acc.任一讲出勤 += m.任一讲出勤;
+    acc._一线 += m._一线; acc._新一线 += m._新一线;
     acc._二线 += m._二线; acc._三线 += m._三线; acc._四线及以下 += m._四线及以下;
     return acc;
-  }, {month:'合计', 在班人次:0, 转化在班:0, 转低人次:0, 转正人次:0, 加微人次:0, 加过微人次:0, app登录人次:0, 任一讲出勤:0, 任一讲完课:0, _30城:0, _一线:0, _新一线:0, _二线:0, _三线:0, _四线及以下:0});
+  }, {month:'合计', 在班人次:0, 转化在班:0, 转低人次:0, 转正人次:0, 任一讲出勤:0, _一线:0, _新一线:0, _二线:0, _三线:0, _四线及以下:0});
 
   function msRow(m, isTotal) {
     var base = m.在班人次;
     var pct = safeDiv(base, msTotal.在班人次);
-    var p30 = safeDiv(m._30城, base);
     var p2up = safeDiv(m._一线 + m._新一线 + m._二线, base);
     var p3up = safeDiv(m._一线 + m._新一线 + m._二线 + m._三线, base);
     var rate = safeDiv(m.转低人次, m.转化在班);
@@ -7473,7 +7518,6 @@ function renderBdMonthly(records, monthOverride, convPeriods, monthRecords, mont
       '<td>' + moLabel + '</td>' +
       '<td>' + fmtInt(base) + '</td>' +
       '<td style="' + dataBarBg(base, msTotal.在班人次) + '">' + fmtPct(pct) + '</td>' +
-      '<td>' + fmtPct(p30) + '</td>' +
       '<td>' + fmtPct(p2up) + '</td>' +
       '<td>' + fmtPct(p3up) + '</td>' +
       '<td>' + fmtInt(m.转低人次) + '</td>' +
@@ -7483,8 +7527,8 @@ function renderBdMonthly(records, monthOverride, convPeriods, monthRecords, mont
   }
 
   var msHtml = '<table><thead><tr>' +
-    '<th>月份</th><th>在班人次</th><th>占比</th>' +
-    '<th>30城占比</th><th>二线及以上</th><th>三线及以上</th>' +
+    '<th>月份</th><th>进量单量</th><th>占比</th>' +
+    '<th>二线及以上</th><th>三线及以上</th>' +
     '<th>转低人次</th><th>转化率</th><th>出勤转率</th>' +
     '</tr></thead><tbody>';
   msList.forEach(function(m) { msHtml += msRow(m, false); });
@@ -7493,31 +7537,36 @@ function renderBdMonthly(records, monthOverride, convPeriods, monthRecords, mont
   document.getElementById('tableBdMonthSummary').innerHTML = msHtml;
 
   // ===== 2c. 分BD数据明细 =====
-  // 口径（2026-11-16）：在班/占比/30城/城市线/加微/APP登录 = 自然月（volRecords）；
-  // 转低/转化在班/转正/任一讲出勤（出勤转率分母，与转低同窗口）= 转化窗口（records）。
+  // 口径（2026-11-16 二改）：进量单量/占比/城市线 = B 表渠道进量时间月（setl，有效单量）；
+  // 加微/加过/APP登录 = A 表所选月份自然月（volRecords，aBase=A表自然月在班，分子分母同源）；
+  // 转低/转化在班/转正/任一讲出勤（出勤转率分母，与转低同窗口）= A 表转化窗口（records）。
   var bdDetailMap = {};
   Object.keys(BD_TARGET).forEach(function(bd) {
-    bdDetailMap[bd] = { name: bd, 在班人次:0, 转化在班:0, 转低人次:0, 转正人次:0, 加微人次:0, 加过微人次:0, app登录人次:0, 任一讲出勤:0, _30城:0, _一线:0, _新一线:0, _二线:0, _三线:0, _四线及以下:0, channels: new Set() };
+    bdDetailMap[bd] = { name: bd, 在班人次:0, aBase:0, 转化在班:0, 转低人次:0, 转正人次:0, 加微人次:0, 加过微人次:0, app登录人次:0, 任一讲出勤:0, _一线:0, _新一线:0, _二线:0, _三线:0, _四线及以下:0, channels: new Set() };
   });
   function bdDetailBucket(bd) {
     if (!bd || !bdDetailMap[bd]) bd = '其他';
-    if (!bdDetailMap[bd]) bdDetailMap[bd] = { name: '其他', 在班人次:0, 转化在班:0, 转低人次:0, 转正人次:0, 加微人次:0, 加过微人次:0, app登录人次:0, 任一讲出勤:0, _30城:0, _一线:0, _新一线:0, _二线:0, _三线:0, _四线及以下:0, channels: new Set() };
+    if (!bdDetailMap[bd]) bdDetailMap[bd] = { name:'其他', 在班人次:0, aBase:0, 转化在班:0, 转低人次:0, 转正人次:0, 加微人次:0, 加过微人次:0, app登录人次:0, 任一讲出勤:0, _一线:0, _新一线:0, _二线:0, _三线:0, _四线及以下:0, channels: new Set() };
     return bdDetailMap[bd];
   }
-  volRecords.forEach(function(r) {
-    var m = bdDetailBucket(r['商务BD']);
-    var n = r.在班人次 || 0;
+  setl.forEach(function(r) {
+    if (typeof r.channel !== 'string' || !r.channel) return;
+    var m = bdDetailBucket(r.bd || '其他');
+    var n = r['有效单量'] || 0;
     m.在班人次 += n;
-    m.加微人次 += r.加微人次 || 0; m.加过微人次 += r.加过微人次 || 0;
-    m.app登录人次 += r['app登录人次'] || 0;
-    if (CITY_30_SET.has(r['城市'])) m._30城 += n;
-    var tier = (r['城市等级'] || '').replace('城市', '');
+    var tier = (r.city_tier || '').replace('城市', '');
     if (tier === '一线') m._一线 += n;
     else if (tier === '新一线') m._新一线 += n;
     else if (tier === '二线') m._二线 += n;
     else if (tier === '三线') m._三线 += n;
     else m._四线及以下 += n;
-    if (r.渠道) m.channels.add(r.渠道);
+    m.channels.add(CHANNEL_MAP_JS[r.channel] || r.channel);
+  });
+  volRecords.forEach(function(r) {
+    var m = bdDetailBucket(r['商务BD']);
+    m.aBase += r.在班人次 || 0;
+    m.加微人次 += r.加微人次 || 0; m.加过微人次 += r.加过微人次 || 0;
+    m.app登录人次 += r['app登录人次'] || 0;
   });
   records.forEach(function(r) {
     var m = bdDetailBucket(r['商务BD']);
@@ -7530,24 +7579,24 @@ function renderBdMonthly(records, monthOverride, convPeriods, monthRecords, mont
   var bdDetailList = Object.values(bdDetailMap).filter(function(b) { return b.在班人次 > 0; });
   bdDetailList.sort(function(a, b) { return b.在班人次 - a.在班人次; });
   var bdDetailTotal = bdDetailList.reduce(function(acc, b) {
-    acc.在班人次 += b.在班人次; acc.转化在班 += b.转化在班; acc.转低人次 += b.转低人次; acc.转正人次 += b.转正人次;
+    acc.在班人次 += b.在班人次; acc.aBase += b.aBase; acc.转化在班 += b.转化在班; acc.转低人次 += b.转低人次; acc.转正人次 += b.转正人次;
     acc.加微人次 += b.加微人次; acc.加过微人次 += b.加过微人次; acc.app登录人次 += b.app登录人次; acc.任一讲出勤 += b.任一讲出勤;
-    acc._30城 += b._30城; acc._一线 += b._一线; acc._新一线 += b._新一线;
+    acc._一线 += b._一线; acc._新一线 += b._新一线;
     acc._二线 += b._二线; acc._三线 += b._三线; acc._四线及以下 += b._四线及以下;
     return acc;
-  }, {name:'合计', 在班人次:0, 转化在班:0, 转低人次:0, 转正人次:0, 加微人次:0, 加过微人次:0, app登录人次:0, 任一讲出勤:0, _30城:0, _一线:0, _新一线:0, _二线:0, _三线:0, _四线及以下:0});
+  }, {name:'合计', 在班人次:0, aBase:0, 转化在班:0, 转低人次:0, 转正人次:0, 加微人次:0, 加过微人次:0, app登录人次:0, 任一讲出勤:0, _一线:0, _新一线:0, _二线:0, _三线:0, _四线及以下:0});
 
   function bdRow(b, isTotal) {
     var base = b.在班人次;
     var pct = safeDiv(base, bdDetailTotal.在班人次);
-    var p30 = safeDiv(b._30城, base);
     var p2up = safeDiv(b._一线 + b._新一线 + b._二线, base);
     var p3up = safeDiv(b._一线 + b._新一线 + b._二线 + b._三线, base);
     var rate = safeDiv(b.转低人次, b.转化在班);
     var attendRate = safeDiv(b.转低人次, b.任一讲出勤);
-    var wechatRate = safeDiv(b.加微人次, base);
-    var wechatRateOver = safeDiv(b.加过微人次, base);
-    var appRate = safeDiv(b.app登录人次, base);
+    var aBase = b.aBase || base;   // 加微/登录率分母 = A 表自然月在班（分子分母同源）
+    var wechatRate = safeDiv(b.加微人次, aBase);
+    var wechatRateOver = safeDiv(b.加过微人次, aBase);
+    var appRate = safeDiv(b.app登录人次, aBase);
     var cls = isTotal ? ' class="total-row"' : '';
     var chNames = isTotal ? '-' : Array.from(b.channels).sort().join('、');
     return '<tr' + cls + '>' +
@@ -7555,7 +7604,6 @@ function renderBdMonthly(records, monthOverride, convPeriods, monthRecords, mont
       '<td style="font-size:11px;color:#64748b;">' + chNames + '</td>' +
       '<td>' + fmtInt(base) + '</td>' +
       '<td style="' + dataBarBg(base, bdDetailTotal.在班人次) + '">' + fmtPct(pct) + '</td>' +
-      '<td>' + fmtPct(p30) + '</td>' +
       '<td>' + fmtPct(p2up) + '</td>' +
       '<td>' + fmtPct(p3up) + '</td>' +
       '<td>' + fmtInt(b.转低人次) + '</td>' +
@@ -7568,8 +7616,8 @@ function renderBdMonthly(records, monthOverride, convPeriods, monthRecords, mont
   }
 
   var bdDetailHtml = '<table><thead><tr>' +
-    '<th>BD</th><th>负责渠道</th><th>在班人次</th><th>占比</th>' +
-    '<th>30城占比</th><th>二线及以上</th><th>三线及以上</th>' +
+    '<th>BD</th><th>负责渠道</th><th>进量单量</th><th>占比</th>' +
+    '<th>二线及以上</th><th>三线及以上</th>' +
     '<th>转低人次</th><th>转化率</th><th>出勤转率</th>' +
     '<th>加微率</th><th>加微率（加过）</th><th>APP登录率</th>' +
     '</tr></thead><tbody>';
@@ -7601,9 +7649,9 @@ function renderBdMonthly(records, monthOverride, convPeriods, monthRecords, mont
       },
       grid: { left: 20, right: 30, top: 20, bottom: 55, containLabel: true },
       xAxis: { type: 'category', data: typeList.map(t => t.type), axisLabel: { fontSize: 13, fontWeight: 600, color: '#1e293b', interval: 0 }, axisLine: { lineStyle: { color: '#94a3b8', width: 1.5 } }, axisTick: { alignWithLabel: true } },
-      yAxis: { type: 'value', name: '在班人次（人）', nameTextStyle: { fontSize: 12, fontWeight: 600, color: '#334155' }, nameGap: 45, axisLabel: { formatter: v => fmtInt(v), fontSize: 11, color: '#475569' }, splitLine: { lineStyle: { color: '#e2e8f0', type: 'dashed' } } },
+      yAxis: { type: 'value', name: '进量单量（单）', nameTextStyle: { fontSize: 12, fontWeight: 600, color: '#334155' }, nameGap: 45, axisLabel: { formatter: v => fmtInt(v), fontSize: 11, color: '#475569' }, splitLine: { lineStyle: { color: '#e2e8f0', type: 'dashed' } } },
       series: [{
-        name: '在班人次', type: 'bar', data: typeList.map((t, i) => ({
+        name: '进量单量', type: 'bar', data: typeList.map((t, i) => ({
           value: t.在班人次,
           itemStyle: { color: new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color: typeColors[i % typeColors.length]},{offset:1,color: hexToRgba(typeColors[i % typeColors.length], 0.6)}]), borderRadius: [6,6,0,0] }
         })),
@@ -7614,7 +7662,7 @@ function renderBdMonthly(records, monthOverride, convPeriods, monthRecords, mont
   }
 
   // Type table — descending
-  let typeHtml = '<table><thead><tr><th>渠道类型</th><th>在班人次</th><th>占比</th><th>转低人次</th><th>转化率</th><th>较上期</th></tr></thead><tbody>';
+  let typeHtml = '<table><thead><tr><th>渠道类型</th><th>进量单量</th><th>占比</th><th>转低人次</th><th>转化率</th><th>较上期</th></tr></thead><tbody>';
   const typeListSorted = Object.values(typeData).filter(t => t.在班人次 > 0);
   typeListSorted.sort((a, b) => b.在班人次 - a.在班人次);
   var curMaxPeriodType = getCurrentMaxPeriod();
@@ -7634,7 +7682,7 @@ function renderBdMonthly(records, monthOverride, convPeriods, monthRecords, mont
   chList.sort((a, b) => b.在班人次 - a.在班人次);
   const totalChLeads = chList.reduce((s, c) => s + c.在班人次, 0);
 
-  let chHtml = '<table><thead><tr><th>排名</th><th>渠道</th><th>渠道类型</th><th>在班人次</th><th>占比</th><th>转低人次</th><th>转化率</th><th>较上期</th></tr></thead><tbody>';
+  let chHtml = '<table><thead><tr><th>排名</th><th>渠道</th><th>渠道类型</th><th>进量单量</th><th>占比</th><th>转低人次</th><th>转化率</th><th>较上期</th></tr></thead><tbody>';
   var curMaxPeriod2 = getCurrentMaxPeriod();
   var extraFiltersCh = getCurrentExtraFilters();
   chList.forEach((ch, idx) => {
@@ -7649,17 +7697,15 @@ function renderBdMonthly(records, monthOverride, convPeriods, monthRecords, mont
   document.getElementById('tableBdChannel').innerHTML = chHtml;
 
   // ===== 5. 月份 × 城市分布 =====
-  // 按月份聚合：在班人次、30城/非30城、各城市等级
-  // 2026-11-16 口径：进量类统计，按购课自然月归集（全月份底表 baseRecords）
+  // 2026-11-16 口径：按 B 表渠道进量时间（ord_month）逐月归集有效单量与城市线结构（setlBase）
   var monthCityMap = {};
-  baseRecords.forEach(function(r) {
-    var mo = r['月份'] || '未知';
+  setlBase.forEach(function(r) {
+    if (!r.month) return;
+    var mo = r.month;
     if (!monthCityMap[mo]) {
       monthCityMap[mo] = {
         month: mo,
         在班人次: 0,
-        _30城: 0,
-        _非30城: 0,
         _一线: 0,
         _新一线: 0,
         _二线: 0,
@@ -7668,18 +7714,15 @@ function renderBdMonthly(records, monthOverride, convPeriods, monthRecords, mont
       };
     }
     var m = monthCityMap[mo];
-    var n = r.在班人次 || 0;
+    var n = r['有效单量'] || 0;
     m.在班人次 += n;
-    // 30城/非30城
-    if (CITY_30_SET.has(r['城市'])) m._30城 += n;
-    else m._非30城 += n;
-    // 城市等级（使用原生字段，与BD卡片口径一致：含新一线）
-    var tier = (r['城市等级'] || '').replace('城市', '');
+    // 城市等级（B 表城市线，与BD卡片口径一致：含新一线）
+    var tier = (r.city_tier || '').replace('城市', '');
     if (tier === '一线') m._一线 += n;
     else if (tier === '新一线') m._新一线 += n;
     else if (tier === '二线') m._二线 += n;
     else if (tier === '三线') m._三线 += n;
-    else m._四线及以下 += n;  // 四线、五线、其他
+    else m._四线及以下 += n;  // 四线、五线、六线及以下、未知
   });
 
   // 按月份排序（字符串 YYYY-MM 可直接字典序排序）
@@ -7687,11 +7730,9 @@ function renderBdMonthly(records, monthOverride, convPeriods, monthRecords, mont
   monthCityList.sort(function(a, b) { return a.month < b.month ? -1 : a.month > b.month ? 1 : 0; });
 
   // 合计行
-  var mcTotal = { month: '合计', 在班人次: 0, _30城: 0, _非30城: 0, _一线: 0, _新一线: 0, _二线: 0, _三线: 0, _四线及以下: 0 };
+  var mcTotal = { month: '合计', 在班人次: 0, _一线: 0, _新一线: 0, _二线: 0, _三线: 0, _四线及以下: 0 };
   monthCityList.forEach(function(m) {
     mcTotal.在班人次 += m.在班人次;
-    mcTotal._30城    += m._30城;
-    mcTotal._非30城  += m._非30城;
     mcTotal._一线    += m._一线;
     mcTotal._新一线  += m._新一线;
     mcTotal._二线    += m._二线;
@@ -7701,23 +7742,18 @@ function renderBdMonthly(records, monthOverride, convPeriods, monthRecords, mont
 
   function mcRow(m, isTotalRow) {
     var base = m.在班人次;
-    var p30     = safeDiv(m._30城, base);
-    var pN30    = safeDiv(m._非30城, base);
     var p1      = safeDiv(m._一线, base);
     var p2      = safeDiv(m._二线, base);
     var p3      = safeDiv(m._三线, base);
     var p4      = safeDiv(m._四线及以下, base);
     var p2up    = safeDiv(m._一线 + m._新一线 + m._二线, base);       // 二线及以上（=一线+新一线+二线）
-    var p2dn    = safeDiv(m._三线 + m._四线及以下, base);               // 二线以下（=三线+四线+五线+其他）
     var p3up    = safeDiv(m._一线 + m._新一线 + m._二线 + m._三线, base); // 三线及以上（=一线+新一线+二线+三线）
-    var p3dn    = safeDiv(m._四线及以下, base);                 // 三线以下
     var cls = isTotalRow ? ' class="total-row"' : '';
     // 月份标签美化：2026-05 → 5月
     var moLabel = m.month === '合计' ? '合计' : m.month.replace(/^\d{4}-0?/, '') + '月';
     return '<tr' + cls + '>' +
       '<td>' + moLabel + '</td>' +
       '<td>' + fmtInt(base) + '</td>' +
-      '<td>' + fmtPct(p30)  + '</td>' +
       '<td>' + fmtPct(p2up) + '</td>' +
       '<td>' + fmtPct(p3up) + '</td>' +
       '</tr>';
@@ -7725,8 +7761,7 @@ function renderBdMonthly(records, monthOverride, convPeriods, monthRecords, mont
 
   var mcHtml = '<table><thead><tr>' +
     '<th>月份</th>' +
-    '<th>在班人次</th>' +
-    '<th>30城占比</th>' +
+    '<th>进量单量</th>' +
     '<th>二线及以上占比</th>' +
     '<th>三线及以上占比</th>' +
     '</tr></thead><tbody>';
@@ -7742,7 +7777,7 @@ function renderBdMonthly(records, monthOverride, convPeriods, monthRecords, mont
     chartMC.setOption({
       tooltip: { trigger: 'axis',
         formatter:function(ps){ return ps[0].axisValue+'<br/>'+ps.map(function(p){return p.marker+p.seriesName+': '+fmtPct(p.value)}).join('<br/>'); } },
-      legend: { data:['30城占比','二线及以上占比','三线及以上占比'], bottom:4, textStyle:{fontSize:11}, itemWidth:14,itemHeight:8 },
+      legend: { data:['二线及以上占比','三线及以上占比'], bottom:4, textStyle:{fontSize:11}, itemWidth:14,itemHeight:8 },
       grid: { left:60,right:20,top:15,bottom:40,containLabel:false },
       xAxis: { type:'category', data:mcNames,
         axisLabel:{fontSize:11,fontWeight:600,color:'#1e293b'},
@@ -7751,9 +7786,6 @@ function renderBdMonthly(records, monthOverride, convPeriods, monthRecords, mont
         splitLine:{lineStyle:{color:'#e2e8f0',type:'dashed'}},
         min:0,max:1 },
       series:[
-        { name:'30城占比', type:'line', data:monthCityList.map(function(m){return safeDiv(m._30城,m.在班人次);}),
-          label:{show:true,formatter:function(p){return fmtPct(p.value);},fontSize:10,fontWeight:'bold'},
-          itemStyle:{color:'#e6a817'},lineStyle:{width:3},symbol:'circle',symbolSize:7 },
         { name:'二线及以上占比', type:'line', data:monthCityList.map(function(m){return safeDiv(m._一线+m._新一线+m._二线,m.在班人次);}),
           label:{show:true,formatter:function(p){return fmtPct(p.value);},fontSize:10,fontWeight:'bold'},
           itemStyle:{color:'#6b8cf0'},lineStyle:{width:3},symbol:'diamond',symbolSize:7 },
