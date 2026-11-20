@@ -9305,15 +9305,16 @@ function renderReadingCompareTable(records) {
       首讲出勤率: safeDiv(m.一讲出勤人数, m.在班人次),
       任一讲出勤率: safeDiv(m.任一讲出勤人数, m.在班人次),
       转化率: safeDiv(m.转低人次, m.转化在班),
+      转化人次: m.转低人次,
       出勤转化率: safeDiv(m.转低人次, m.任一讲出勤人数)
     };
   }
 
   function cellsHtml(r) {
-    return '<td>' + r.category + '</td><td>' + fmtInt(r.在班) + '</td><td>' + fmtPct(r.加微率) + '</td><td>' + fmtPct(r.加微率加过) + '</td><td>' + fmtPct(r.APP登录率) + '</td><td>' + fmtPct(r.首讲出勤率) + '</td><td>' + fmtPct(r.任一讲出勤率) + '</td><td>' + fmtPct(r.转化率) + '</td><td>' + fmtPct(r.出勤转化率) + '</td>';
+    return '<td>' + r.category + '</td><td>' + fmtInt(r.在班) + '</td><td>' + fmtPct(r.加微率) + '</td><td>' + fmtPct(r.加微率加过) + '</td><td>' + fmtPct(r.APP登录率) + '</td><td>' + fmtPct(r.首讲出勤率) + '</td><td>' + fmtPct(r.任一讲出勤率) + '</td><td>' + fmtInt(r.转化人次) + '</td><td>' + fmtPct(r.转化率) + '</td><td>' + fmtPct(r.出勤转化率) + '</td>';
   }
 
-  var headers = ['分类','在班人次','加微率','加微率（加过）','APP登录率','首讲出勤率','任一讲出勤率','转化率','出勤转化率'];
+  var headers = ['分类','在班人次','加微率','加微率（加过）','APP登录率','首讲出勤率','任一讲出勤率','转化人次','转化率','出勤转化率'];
   var html = '<table class="dday-drill-table"><thead><tr>';
   headers.forEach(function(h) { html += '<th>' + h + '</th>'; });
   html += '</tr></thead><tbody>';
@@ -9340,6 +9341,8 @@ function renderFullFunnel(records) {
     { key: '首讲完课率', label: '首讲完课率', isRate: true, numField: '一讲完课人数' },
     { key: '降幅1_3', label: '1-3讲出勤率降幅', isRate: true, numField: null },
     { key: '任一讲出勤率', label: '任一讲出勤率', isRate: true, numField: '任一讲出勤人数' },
+    // 2026-11-20 Tal：全链路表增加「转化人次」绝对量列（=转低人次，不计入率类图表）
+    { key: '转低人次', label: '转化人次', isRate: false, numField: null, showPct: false },
     { key: '转化率', label: '转化率', isRate: true, numField: '转低人次' },
     { key: '出勤转化率', label: '出勤转化率', isRate: true, numField: null },
     { key: '连续5讲出勤率', label: '连续5讲出勤率', isRate: true, numField: '连续5讲出勤人数' }
@@ -9570,6 +9573,11 @@ function renderFullFunnel(records) {
   // Total row
   var totalRow = { 在班人次: totalLeads };
   COLS.forEach(function(col) {
+    // 2026-11-20：转化人次列的合计＝各行转低人次求和（totalRow 初始化只带了在班人次）
+    if (col.key === '转低人次') {
+      totalRow['转低人次'] = list.reduce(function(s, r) { return s + (r.转低人次 || 0); }, 0);
+      return;
+    }
     if (!col.isRate) return;
     var numKey = col.key.replace('率','').replace('降幅1_3','');
     if (col.key === '降幅1_3') {
@@ -9783,7 +9791,10 @@ merged.一讲出勤人数 += m.一讲出勤人数;
     // Grade total
     html += '<tr class="total-row"><td>' + g + '合计</td>';
     COLS.forEach(function(col) {
-      if (!col.isRate) {
+      // 2026-11-20：转化人次列合计＝该年级各辅导老师转低人次求和（不能沿用 gTotalLeads）
+      if (col.key === '转低人次') {
+        html += '<td>' + fmtInt(teachers.reduce(function(s, r) { return s + (r.转低人次 || 0); }, 0)) + '</td>';
+      } else if (!col.isRate) {
         html += '<td>' + fmtInt(gTotalLeads) + '</td>';
         if (col.showPct) html += '<td>100%</td>';
       } else if (col.key === '降幅1_3') {
