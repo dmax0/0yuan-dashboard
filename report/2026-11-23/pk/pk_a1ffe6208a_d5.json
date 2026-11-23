@@ -231,7 +231,7 @@
     "🟢 今日领先最大项：摸底测覆盖率（商务组 领先 1.0pp）"
   ],
   "baseline": null,
-  "text": "**📊 商务组 PK 299组 · 课前**\n期次：冬3期 ｜ 数据截至 T-1\n\n**总计**\n\n- **加微率**：商务组 57.7% VS 299组 57.4%\n- **App登录率**：商务组 17.4% VS 299组 17.1%\n- **摸底测覆盖率**：商务组 10.9% VS 299组 9.9%\n- **激活率**：商务组 31.6% VS 299组 33.4%\n- **破冰率**：商务组 14.0% VS 299组 20.3%\n- **深沟率**：商务组 6.2% VS 299组 7.7%\n\n🔴 今日落后最大项：破冰率（商务组 落后 6.3pp）\n\n🟢 今日领先最大项：摸底测覆盖率（商务组 领先 1.0pp）\n\n![总计对比表](pk_a1ffe6208a_d5_total.png)\n\n**分年级明细**\n![分年级对比表](pk_a1ffe6208a_d5_grades.png)\n\n**分年级下辅导**\n![分年级下辅导](pk_a1ffe6208a_d5_tutor.png)\n\n**分渠道**\n![分渠道](pk_a1ffe6208a_d5_channel.png)",
+  "text": "**📊 商务组 PK 299组 · 课前**\n期次：冬3期 ｜ 数据截至 T-1\n\n**总计**\n\n- **加微率**：商务组 57.7% VS 299组 57.4%\n- **App登录率**：商务组 17.4% VS 299组 17.1%\n- **摸底测覆盖率**：商务组 10.9% VS 299组 9.9%\n- **激活率**：商务组 31.6% VS 299组 33.4%\n- **破冰率**：商务组 14.0% VS 299组 20.3%\n- **深沟率**：商务组 6.2% VS 299组 7.7%\n\n🔴 今日落后最大项：破冰率（商务组 落后 6.3pp）\n\n🟢 今日领先最大项：摸底测覆盖率（商务组 领先 1.0pp）\n\n![总计对比表](pk_a1ffe6208a_d5_total.png)\n\n**分年级明细**\n![分年级对比表](pk_a1ffe6208a_d5_grades.png)\n\n电话数据：D表快照日期不匹配，本条暂不附电话对比。\n\n**分年级下辅导**\n![分年级下辅导](pk_a1ffe6208a_d5_tutor.png)\n\n**分渠道**\n![分渠道](pk_a1ffe6208a_d5_channel.png)",
   "image_path": "/Users/tal/WorkBuddy/0yuan-dashboard/site/report/2026-11-23/pk/pk_a1ffe6208a_d5.png",
   "image_paths": {
     "total": "/Users/tal/WorkBuddy/0yuan-dashboard/site/report/2026-11-23/pk/pk_a1ffe6208a_d5_total.png",
@@ -239,5 +239,6 @@
     "tutor": "/Users/tal/WorkBuddy/0yuan-dashboard/site/report/2026-11-23/pk/pk_a1ffe6208a_d5_tutor.png",
     "channel": "/Users/tal/WorkBuddy/0yuan-dashboard/site/report/2026-11-23/pk/pk_a1ffe6208a_d5_channel.png"
   },
-  "html_path": "/Users/tal/WorkBuddy/0yuan-dashboard/site/report/2026-11-23/pk/pk_a1ffe6208a_d5.html"
+  "html_path": "/Users/tal/WorkBuddy/0yuan-dashboard/site/report/2026-11-23/pk/pk_a1ffe6208a_d5.html",
+  "phone_note": "电话数据：D表快照日期不匹配，本条暂不附电话对比。"
 }
