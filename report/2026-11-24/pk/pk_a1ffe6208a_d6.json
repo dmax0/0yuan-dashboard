@@ -1,0 +1,674 @@
+{
+  "period": "冬3期",
+  "day": 6,
+  "phase": "课前",
+  "stage": "课前 D6",
+  "date": "2026-11-24",
+  "source_date": "2026-11-24",
+  "cutoff": "2026-11-23",
+  "preview": false,
+  "title": "📊 商务组 PK 299组 · 课前",
+  "metrics": [
+    "加微率",
+    "App登录率",
+    "摸底测覆盖率",
+    "激活率",
+    "破冰率",
+    "深沟率"
+  ],
+  "totals": {
+    "加微率": {
+      "business": 58.01526717557252,
+      "peer": 56.567796610169495,
+      "gap": 1.447470565403023
+    },
+    "App登录率": {
+      "business": 17.68447837150127,
+      "peer": 18.85593220338983,
+      "gap": -1.1714538318885594
+    },
+    "摸底测覆盖率": {
+      "business": 10.814249363867685,
+      "peer": 11.864406779661017,
+      "gap": -1.0501574157933327
+    },
+    "激活率": {
+      "business": 31.806615776081426,
+      "peer": 32.20338983050848,
+      "gap": -0.39677405442705194
+    },
+    "破冰率": {
+      "business": 15.521628498727736,
+      "peer": 21.39830508474576,
+      "gap": -5.876676586018025
+    },
+    "深沟率": {
+      "business": 7.167090754877014,
+      "peer": 8.474576271186441,
+      "gap": -1.307485516309427
+    }
+  },
+  "grades": {
+    "1年级": {
+      "加微率": {
+        "business": 64.01384083044982,
+        "peer": 58.8235294117647,
+        "gap": 5.19031141868512
+      },
+      "App登录率": {
+        "business": 18.685121107266436,
+        "peer": 22.689075630252102,
+        "gap": -4.003954522985666
+      },
+      "摸底测覆盖率": {
+        "business": 10.899653979238755,
+        "peer": 13.445378151260504,
+        "gap": -2.5457241720217496
+      },
+      "激活率": {
+        "business": 35.98615916955017,
+        "peer": 34.45378151260504,
+        "gap": 1.5323776569451297
+      },
+      "破冰率": {
+        "business": 17.301038062283737,
+        "peer": 23.529411764705884,
+        "gap": -6.228373702422147
+      },
+      "深沟率": {
+        "business": 7.439446366782007,
+        "peer": 5.882352941176471,
+        "gap": 1.5570934256055358
+      }
+    },
+    "2年级": {
+      "加微率": {
+        "business": 58.39080459770115,
+        "peer": 52.63157894736842,
+        "gap": 5.759225650332731
+      },
+      "App登录率": {
+        "business": 17.93103448275862,
+        "peer": 15.789473684210526,
+        "gap": 2.1415607985480936
+      },
+      "摸底测覆盖率": {
+        "business": 13.563218390804598,
+        "peer": 10.526315789473685,
+        "gap": 3.0369026013309135
+      },
+      "激活率": {
+        "business": 33.10344827586207,
+        "peer": 30.263157894736842,
+        "gap": 2.8402903811252287
+      },
+      "破冰率": {
+        "business": 17.011494252873565,
+        "peer": 17.105263157894736,
+        "gap": -0.09376890502117163
+      },
+      "深沟率": {
+        "business": 8.275862068965518,
+        "peer": 7.894736842105263,
+        "gap": 0.38112522686025496
+      }
+    },
+    "3年级": {
+      "加微率": {
+        "business": 59.09090909090909,
+        "peer": 64.21052631578948,
+        "gap": -5.119617224880386
+      },
+      "App登录率": {
+        "business": 17.454545454545453,
+        "peer": 21.05263157894737,
+        "gap": -3.5980861244019167
+      },
+      "摸底测覆盖率": {
+        "business": 10.181818181818182,
+        "peer": 15.789473684210526,
+        "gap": -5.607655502392344
+      },
+      "激活率": {
+        "business": 33.81818181818182,
+        "peer": 34.73684210526316,
+        "gap": -0.9186602870813374
+      },
+      "破冰率": {
+        "business": 12.545454545454545,
+        "peer": 26.31578947368421,
+        "gap": -13.770334928229664
+      },
+      "深沟率": {
+        "business": 4.909090909090909,
+        "peer": 10.526315789473685,
+        "gap": -5.617224880382776
+      }
+    },
+    "4年级": {
+      "加微率": {
+        "business": 55.22727272727273,
+        "peer": 56.470588235294116,
+        "gap": -1.2433155080213893
+      },
+      "App登录率": {
+        "business": 19.09090909090909,
+        "peer": 18.823529411764707,
+        "gap": 0.26737967914438343
+      },
+      "摸底测覆盖率": {
+        "business": 11.136363636363637,
+        "peer": 9.411764705882353,
+        "gap": 1.7245989304812834
+      },
+      "激活率": {
+        "business": 27.954545454545453,
+        "peer": 37.64705882352941,
+        "gap": -9.69251336898396
+      },
+      "破冰率": {
+        "business": 17.954545454545453,
+        "peer": 22.352941176470587,
+        "gap": -4.398395721925134
+      },
+      "深沟率": {
+        "business": 8.181818181818182,
+        "peer": 12.941176470588236,
+        "gap": -4.759358288770054
+      }
+    },
+    "5年级": {
+      "加微率": {
+        "business": 49.57746478873239,
+        "peer": 49.48453608247423,
+        "gap": 0.09292870625816363
+      },
+      "App登录率": {
+        "business": 14.366197183098592,
+        "peer": 14.43298969072165,
+        "gap": -0.06679250762305777
+      },
+      "摸底测覆盖率": {
+        "business": 7.887323943661972,
+        "peer": 9.278350515463918,
+        "gap": -1.3910265718019463
+      },
+      "激活率": {
+        "business": 25.070422535211268,
+        "peer": 23.711340206185568,
+        "gap": 1.3590823290257
+      },
+      "破冰率": {
+        "business": 12.394366197183098,
+        "peer": 16.49484536082474,
+        "gap": -4.100479163641642
+      },
+      "深沟率": {
+        "business": 7.605633802816901,
+        "peer": 6.185567010309279,
+        "gap": 1.4200667925076225
+      }
+    }
+  },
+  "counts": {
+    "business": 2358.0,
+    "peer": 472.0
+  },
+  "members": {
+    "business": [
+      "史春晶",
+      "崔国锋"
+    ],
+    "peer": [
+      "学部组（其余学科组）"
+    ]
+  },
+  "subject": "阅读",
+  "warnings": [],
+  "ready": true,
+  "insights": [
+    "🔴 今日落后最大项：破冰率（商务组 落后 5.9pp）",
+    "🟢 今日领先最大项：加微率（商务组 领先 1.4pp）"
+  ],
+  "baseline": null,
+  "text": "**📊 商务组 PK 299组 · 课前**\n期次：冬3期 ｜ 数据截至 T-1\n\n**总计**\n\n- **加微率**：商务组 58.0% VS 299组 56.6%\n- **App登录率**：商务组 17.7% VS 299组 18.9%\n- **摸底测覆盖率**：商务组 10.8% VS 299组 11.9%\n- **激活率**：商务组 31.8% VS 299组 32.2%\n- **破冰率**：商务组 15.5% VS 299组 21.4%\n- **深沟率**：商务组 7.2% VS 299组 8.5%\n\n🔴 今日落后最大项：破冰率（商务组 落后 5.9pp）\n\n🟢 今日领先最大项：加微率（商务组 领先 1.4pp）\n\n![总计对比表](pk_a1ffe6208a_d6_total.png)\n\n**分年级明细**\n![分年级对比表](pk_a1ffe6208a_d6_grades.png)\n\n**电话拨打对比**\n![电话拨打对比表](phone_a1ffe6208a_cumulative.png)\n\n**分年级下辅导**\n![分年级下辅导](pk_a1ffe6208a_d6_tutor.png)\n\n**分渠道**\n![分渠道](pk_a1ffe6208a_d6_channel.png)",
+  "image_path": "/Users/tal/WorkBuddy/0yuan-dashboard/site/report/2026-11-24/pk/pk_a1ffe6208a_d6.png",
+  "image_paths": {
+    "total": "/Users/tal/WorkBuddy/0yuan-dashboard/site/report/2026-11-24/pk/pk_a1ffe6208a_d6_total.png",
+    "grades": "/Users/tal/WorkBuddy/0yuan-dashboard/site/report/2026-11-24/pk/pk_a1ffe6208a_d6_grades.png",
+    "tutor": "/Users/tal/WorkBuddy/0yuan-dashboard/site/report/2026-11-24/pk/pk_a1ffe6208a_d6_tutor.png",
+    "channel": "/Users/tal/WorkBuddy/0yuan-dashboard/site/report/2026-11-24/pk/pk_a1ffe6208a_d6_channel.png",
+    "phone": "/Users/tal/WorkBuddy/0yuan-dashboard/site/report/2026-11-24/pk/phone_a1ffe6208a_cumulative.png"
+  },
+  "html_path": "/Users/tal/WorkBuddy/0yuan-dashboard/site/report/2026-11-24/pk/pk_a1ffe6208a_d6.html",
+  "phone": {
+    "period": "冬3期",
+    "source_date": "2026-11-24",
+    "mode": "cumulative",
+    "groups": {
+      "business": {
+        "rows": 19,
+        "enrollment": 2374,
+        "counts": {
+          "oa_dial": 525,
+          "oa_connect": 326,
+          "wecom_dial": 2513,
+          "wecom_connect": 45
+        },
+        "rates": {
+          "oa_dial": 22.114574557708508,
+          "oa_connect": 13.732097725358045,
+          "wecom_dial": 105.85509688289807,
+          "wecom_connect": 1.8955349620893007
+        }
+      },
+      "peer": {
+        "rows": 5,
+        "enrollment": 475,
+        "counts": {
+          "oa_dial": 199,
+          "oa_connect": 96,
+          "wecom_dial": 521,
+          "wecom_connect": 31
+        },
+        "rates": {
+          "oa_dial": 41.89473684210526,
+          "oa_connect": 20.210526315789473,
+          "wecom_dial": 109.6842105263158,
+          "wecom_connect": 6.526315789473684
+        }
+      },
+      "shi": {
+        "rows": 9,
+        "enrollment": 1125,
+        "counts": {
+          "oa_dial": 472,
+          "oa_connect": 296,
+          "wecom_dial": 1221,
+          "wecom_connect": 35
+        },
+        "rates": {
+          "oa_dial": 41.955555555555556,
+          "oa_connect": 26.31111111111111,
+          "wecom_dial": 108.53333333333333,
+          "wecom_connect": 3.111111111111111
+        }
+      },
+      "cui": {
+        "rows": 10,
+        "enrollment": 1249,
+        "counts": {
+          "oa_dial": 53,
+          "oa_connect": 30,
+          "wecom_dial": 1292,
+          "wecom_connect": 10
+        },
+        "rates": {
+          "oa_dial": 4.243394715772618,
+          "oa_connect": 2.401921537229784,
+          "wecom_dial": 103.4427542033627,
+          "wecom_connect": 0.800640512409928
+        }
+      }
+    },
+    "grades": {
+      "1年级": {
+        "business": {
+          "rows": 4,
+          "enrollment": 583,
+          "counts": {
+            "oa_dial": 140,
+            "oa_connect": 92,
+            "wecom_dial": 609,
+            "wecom_connect": 6
+          },
+          "rates": {
+            "oa_dial": 24.013722126929675,
+            "oa_connect": 15.780445969125214,
+            "wecom_dial": 104.45969125214408,
+            "wecom_connect": 1.0291595197255574
+          }
+        },
+        "peer": {
+          "rows": 1,
+          "enrollment": 120,
+          "counts": {
+            "oa_dial": 46,
+            "oa_connect": 20,
+            "wecom_dial": 125,
+            "wecom_connect": 6
+          },
+          "rates": {
+            "oa_dial": 38.333333333333336,
+            "oa_connect": 16.666666666666668,
+            "wecom_dial": 104.16666666666667,
+            "wecom_connect": 5.0
+          }
+        },
+        "shi": {
+          "rows": 2,
+          "enrollment": 292,
+          "counts": {
+            "oa_dial": 140,
+            "oa_connect": 92,
+            "wecom_dial": 315,
+            "wecom_connect": 6
+          },
+          "rates": {
+            "oa_dial": 47.945205479452056,
+            "oa_connect": 31.506849315068493,
+            "wecom_dial": 107.87671232876713,
+            "wecom_connect": 2.0547945205479454
+          }
+        },
+        "cui": {
+          "rows": 2,
+          "enrollment": 291,
+          "counts": {
+            "oa_dial": 0,
+            "oa_connect": 0,
+            "wecom_dial": 294,
+            "wecom_connect": 0
+          },
+          "rates": {
+            "oa_dial": 0.0,
+            "oa_connect": 0.0,
+            "wecom_dial": 101.03092783505154,
+            "wecom_connect": 0.0
+          }
+        }
+      },
+      "2年级": {
+        "business": {
+          "rows": 4,
+          "enrollment": 436,
+          "counts": {
+            "oa_dial": 60,
+            "oa_connect": 44,
+            "wecom_dial": 451,
+            "wecom_connect": 10
+          },
+          "rates": {
+            "oa_dial": 13.761467889908257,
+            "oa_connect": 10.091743119266056,
+            "wecom_dial": 103.44036697247707,
+            "wecom_connect": 2.293577981651376
+          }
+        },
+        "peer": {
+          "rows": 1,
+          "enrollment": 76,
+          "counts": {
+            "oa_dial": 29,
+            "oa_connect": 12,
+            "wecom_dial": 83,
+            "wecom_connect": 5
+          },
+          "rates": {
+            "oa_dial": 38.1578947368421,
+            "oa_connect": 15.789473684210526,
+            "wecom_dial": 109.21052631578948,
+            "wecom_connect": 6.578947368421052
+          }
+        },
+        "shi": {
+          "rows": 2,
+          "enrollment": 218,
+          "counts": {
+            "oa_dial": 60,
+            "oa_connect": 44,
+            "wecom_dial": 230,
+            "wecom_connect": 10
+          },
+          "rates": {
+            "oa_dial": 27.522935779816514,
+            "oa_connect": 20.18348623853211,
+            "wecom_dial": 105.5045871559633,
+            "wecom_connect": 4.587155963302752
+          }
+        },
+        "cui": {
+          "rows": 2,
+          "enrollment": 218,
+          "counts": {
+            "oa_dial": 0,
+            "oa_connect": 0,
+            "wecom_dial": 221,
+            "wecom_connect": 0
+          },
+          "rates": {
+            "oa_dial": 0.0,
+            "oa_connect": 0.0,
+            "wecom_dial": 101.37614678899082,
+            "wecom_connect": 0.0
+          }
+        }
+      },
+      "3年级": {
+        "business": {
+          "rows": 4,
+          "enrollment": 551,
+          "counts": {
+            "oa_dial": 154,
+            "oa_connect": 88,
+            "wecom_dial": 587,
+            "wecom_connect": 9
+          },
+          "rates": {
+            "oa_dial": 27.9491833030853,
+            "oa_connect": 15.970961887477314,
+            "wecom_dial": 106.53357531760436,
+            "wecom_connect": 1.633393829401089
+          }
+        },
+        "peer": {
+          "rows": 1,
+          "enrollment": 95,
+          "counts": {
+            "oa_dial": 46,
+            "oa_connect": 18,
+            "wecom_dial": 105,
+            "wecom_connect": 6
+          },
+          "rates": {
+            "oa_dial": 48.421052631578945,
+            "oa_connect": 18.94736842105263,
+            "wecom_dial": 110.52631578947368,
+            "wecom_connect": 6.315789473684211
+          }
+        },
+        "shi": {
+          "rows": 2,
+          "enrollment": 275,
+          "counts": {
+            "oa_dial": 101,
+            "oa_connect": 58,
+            "wecom_dial": 277,
+            "wecom_connect": 0
+          },
+          "rates": {
+            "oa_dial": 36.72727272727273,
+            "oa_connect": 21.09090909090909,
+            "wecom_dial": 100.72727272727273,
+            "wecom_connect": 0.0
+          }
+        },
+        "cui": {
+          "rows": 2,
+          "enrollment": 276,
+          "counts": {
+            "oa_dial": 53,
+            "oa_connect": 30,
+            "wecom_dial": 310,
+            "wecom_connect": 9
+          },
+          "rates": {
+            "oa_dial": 19.202898550724637,
+            "oa_connect": 10.869565217391305,
+            "wecom_dial": 112.31884057971014,
+            "wecom_connect": 3.260869565217391
+          }
+        }
+      },
+      "4年级": {
+        "business": {
+          "rows": 4,
+          "enrollment": 442,
+          "counts": {
+            "oa_dial": 118,
+            "oa_connect": 62,
+            "wecom_dial": 496,
+            "wecom_connect": 17
+          },
+          "rates": {
+            "oa_dial": 26.69683257918552,
+            "oa_connect": 14.027149321266968,
+            "wecom_dial": 112.21719457013575,
+            "wecom_connect": 3.8461538461538463
+          }
+        },
+        "peer": {
+          "rows": 1,
+          "enrollment": 85,
+          "counts": {
+            "oa_dial": 36,
+            "oa_connect": 18,
+            "wecom_dial": 100,
+            "wecom_connect": 7
+          },
+          "rates": {
+            "oa_dial": 42.35294117647059,
+            "oa_connect": 21.176470588235293,
+            "wecom_dial": 117.6470588235294,
+            "wecom_connect": 8.235294117647058
+          }
+        },
+        "shi": {
+          "rows": 2,
+          "enrollment": 220,
+          "counts": {
+            "oa_dial": 118,
+            "oa_connect": 62,
+            "wecom_dial": 273,
+            "wecom_connect": 17
+          },
+          "rates": {
+            "oa_dial": 53.63636363636363,
+            "oa_connect": 28.181818181818183,
+            "wecom_dial": 124.0909090909091,
+            "wecom_connect": 7.7272727272727275
+          }
+        },
+        "cui": {
+          "rows": 2,
+          "enrollment": 222,
+          "counts": {
+            "oa_dial": 0,
+            "oa_connect": 0,
+            "wecom_dial": 223,
+            "wecom_connect": 0
+          },
+          "rates": {
+            "oa_dial": 0.0,
+            "oa_connect": 0.0,
+            "wecom_dial": 100.45045045045045,
+            "wecom_connect": 0.0
+          }
+        }
+      },
+      "5年级": {
+        "business": {
+          "rows": 3,
+          "enrollment": 362,
+          "counts": {
+            "oa_dial": 53,
+            "oa_connect": 40,
+            "wecom_dial": 370,
+            "wecom_connect": 3
+          },
+          "rates": {
+            "oa_dial": 14.640883977900552,
+            "oa_connect": 11.049723756906078,
+            "wecom_dial": 102.20994475138122,
+            "wecom_connect": 0.8287292817679558
+          }
+        },
+        "peer": {
+          "rows": 1,
+          "enrollment": 99,
+          "counts": {
+            "oa_dial": 42,
+            "oa_connect": 28,
+            "wecom_dial": 108,
+            "wecom_connect": 7
+          },
+          "rates": {
+            "oa_dial": 42.42424242424242,
+            "oa_connect": 28.282828282828284,
+            "wecom_dial": 109.0909090909091,
+            "wecom_connect": 7.070707070707071
+          }
+        },
+        "shi": {
+          "rows": 1,
+          "enrollment": 120,
+          "counts": {
+            "oa_dial": 53,
+            "oa_connect": 40,
+            "wecom_dial": 126,
+            "wecom_connect": 2
+          },
+          "rates": {
+            "oa_dial": 44.166666666666664,
+            "oa_connect": 33.333333333333336,
+            "wecom_dial": 105.0,
+            "wecom_connect": 1.6666666666666667
+          }
+        },
+        "cui": {
+          "rows": 2,
+          "enrollment": 242,
+          "counts": {
+            "oa_dial": 0,
+            "oa_connect": 0,
+            "wecom_dial": 244,
+            "wecom_connect": 1
+          },
+          "rates": {
+            "oa_dial": 0.0,
+            "oa_connect": 0.0,
+            "wecom_dial": 100.82644628099173,
+            "wecom_connect": 0.4132231404958678
+          }
+        }
+      }
+    },
+    "totals": {
+      "oa_dial": {
+        "business": 22.114574557708508,
+        "peer": 41.89473684210526,
+        "gap": -19.780162284396752
+      },
+      "oa_connect": {
+        "business": 13.732097725358045,
+        "peer": 20.210526315789473,
+        "gap": -6.478428590431427
+      },
+      "wecom_dial": {
+        "business": 105.85509688289807,
+        "peer": 109.6842105263158,
+        "gap": -3.8291136434177275
+      },
+      "wecom_connect": {
+        "business": 1.8955349620893007,
+        "peer": 6.526315789473684,
+        "gap": -4.630780827384383
+      }
+    },
+    "has_both_groups": true,
+    "warnings": [
+      "20条教学组名称为空的记录按“其余教学组”口径归入学部组",
+      "2条记录的4s拨通次数大于拨打次数，保留原表统计值；次数/在班不是接通成功率"
+    ]
+  }
+}
